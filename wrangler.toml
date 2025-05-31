@@ -1,4 +1,4 @@
-name = "harare-metro"
+name = "harare-metro-worker"
 main = "worker.js"
 compatibility_date = "2024-05-01"
 # Enables compatibility with Node.js APIs for better integration with existing libraries.
