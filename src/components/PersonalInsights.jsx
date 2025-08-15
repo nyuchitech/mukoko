@@ -1,12 +1,11 @@
 // src/components/PersonalInsights.jsx - Enhanced user-specific insights
-import React, { useState, useMemo, useEffect } from 'react'
+import React, { useState, useMemo } from 'react'
 import {
   User,
   Clock,
   Heart,
   Bookmark,
   Eye,
-  TrendingUp,
   BarChart3,
   Calendar,
   Tag,
@@ -15,21 +14,17 @@ import {
   GraduationCap,
   Globe,
   Newspaper,
-  ArrowUpRight,
   Flame,
   Zap,
   Star,
   Target
 } from 'lucide-react'
 import { Button } from './ui/button'
-import { Badge } from './ui/badge'
 import { ScrollArea, ScrollBar } from './ui/scroll-area'
-import { useAnalytics } from '../hooks/useAnalytics'
 
-const PersonalInsights = ({ currentColors, allFeeds, lastUpdated }) => {
+const PersonalInsights = ({ currentColors, allFeeds }) => {
   const [selectedTimeRange, setSelectedTimeRange] = useState('7d')
   const [selectedInsightType, setSelectedInsightType] = useState('overview')
-  const { trackCategoryClick } = useAnalytics()
 
   // Get user's interaction data from localStorage
   const getUserData = () => {
@@ -405,8 +400,7 @@ const PersonalInsights = ({ currentColors, allFeeds, lastUpdated }) => {
       .sort((a, b) => new Date(b) - new Date(a))
     
     let streak = 0
-    const today = new Date().toDateString()
-    let currentDate = new Date()
+    const currentDate = new Date()
     
     for (let i = 0; i < dates.length; i++) {
       const checkDate = currentDate.toDateString()
@@ -736,7 +730,7 @@ const PersonalInsights = ({ currentColors, allFeeds, lastUpdated }) => {
               Trusted Sources
             </h3>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-              {personalInsights.sourcePreferences.slice(0, 8).map((source, index) => (
+              {personalInsights.sourcePreferences.slice(0, 8).map((source) => (
                 <div key={source.source} className="flex items-center justify-between p-3 rounded-lg border border-gray-200 dark:border-gray-600">
                   <div className="flex items-center">
                     <div className={`w-3 h-3 rounded-full mr-3 bg-blue-500`}></div>
@@ -767,7 +761,7 @@ const PersonalInsights = ({ currentColors, allFeeds, lastUpdated }) => {
             
             {personalInsights.recommendations.length > 0 ? (
               <div className="space-y-3">
-                {personalInsights.recommendations.slice(0, 8).map((article, index) => (
+                {personalInsights.recommendations.slice(0, 8).map((article) => (
                   <div key={article.id || article.link} className="flex items-start gap-4 p-3 rounded-lg hover:bg-gray-50 dark:hover:bg-gray-800 transition-colors">
                     {article.optimizedImageUrl && (
                       <img

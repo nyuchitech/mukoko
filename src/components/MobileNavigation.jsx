@@ -4,13 +4,11 @@ import { IconButton } from '@/components/ui/icon-button'
 import { cn } from '@/lib/utils'
 import { 
   MagnifyingGlassIcon,
-  HomeIcon,
   UserCircleIcon,
   Squares2X2Icon
 } from '@heroicons/react/24/outline'
 import {
   MagnifyingGlassIcon as MagnifyingGlassSolidIcon,
-  HomeIcon as HomeSolidIcon,
   UserCircleIcon as UserCircleSolidIcon,
   Squares2X2Icon as Squares2X2SolidIcon
 } from '@heroicons/react/24/solid'
