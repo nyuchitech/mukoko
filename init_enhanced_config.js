@@ -85,13 +85,13 @@ async function initializeConfig() {
   try {
     // Check if CONFIG_STORAGE binding exists (might not until deployed)
     console.log('Setting RSS sources...');
-    execSync(\`npx wrangler kv key put "config:rss_sources" '\${JSON.stringify(RSS_SOURCES)}' --binding CONFIG_STORAGE\`, { stdio: 'inherit' });
+    execSync(`npx wrangler kv key put "config:rss_sources" '${JSON.stringify(RSS_SOURCES)}' --binding CONFIG_STORAGE`, { stdio: 'inherit' });
     
     console.log('Setting categories...');
-    execSync(\`npx wrangler kv key put "config:categories" '\${JSON.stringify(CATEGORIES)}' --binding CONFIG_STORAGE\`, { stdio: 'inherit' });
+    execSync(`npx wrangler kv key put "config:categories" '${JSON.stringify(CATEGORIES)}' --binding CONFIG_STORAGE`, { stdio: 'inherit' });
     
     console.log('Setting site config...');
-    execSync(\`npx wrangler kv key put "config:site" '\${JSON.stringify(SITE_CONFIG)}' --binding CONFIG_STORAGE\`, { stdio: 'inherit' });
+    execSync(`npx wrangler kv key put "config:site" '${JSON.stringify(SITE_CONFIG)}' --binding CONFIG_STORAGE`, { stdio: 'inherit' });
     
     console.log('✅ Enhanced configuration initialized successfully');
   } catch (error) {

@@ -4,7 +4,6 @@ import {
   XMarkIcon, 
   ShareIcon, 
   HeartIcon,
-  GlobeAltIcon,
   ClockIcon,
   BookmarkIcon,
   ArrowsPointingOutIcon,
@@ -24,14 +23,7 @@ const ArticleModal = ({
   savedArticles = [],
   onToggleSave 
 }) => {
-  // Early return if no article
-  if (!article) {
-    console.log('ArticleModal: No article provided, not rendering')
-    return null
-  }
-
-  console.log('ArticleModal: Rendering modal for article:', article.title)
-
+  // Initialize all hooks at the top before any conditional logic
   const [isLiked, setIsLiked] = useState(false)
   const [showShareModal, setShowShareModal] = useState(false)
   const [readingProgress, setReadingProgress] = useState(0)
@@ -45,9 +37,7 @@ const ArticleModal = ({
   const contentRef = useRef(null)
   const scrollTimeoutRef = useRef(null)
 
-  // Check if article is saved
-  const isBookmarked = savedArticles.some(saved => saved.link === article.link)
-
+  // All useEffect hooks must be called before any conditional logic
   // Calculate reading time
   useEffect(() => {
     if (article?.description) {
@@ -59,22 +49,26 @@ const ArticleModal = ({
 
   // Track reading progress and auto-hide header
   useEffect(() => {
-    if (!contentRef.current) return
+    if (!contentRef.current || !article) return
 
     const handleScroll = () => {
       const element = contentRef.current
+      if (!element) return
+      
       const scrollTop = element.scrollTop
-      const scrollHeight = element.scrollHeight - element.clientHeight
-      const progress = scrollHeight > 0 ? (scrollTop / scrollHeight) * 100 : 0
-      setReadingProgress(Math.min(100, Math.max(0, progress)))
-
-      // Show header on scroll, then hide after delay
-      setShowHeader(true)
+      const scrollHeight = element.scrollHeight
+      const clientHeight = element.clientHeight
+      const progress = (scrollTop / (scrollHeight - clientHeight)) * 100
+      
+      setReadingProgress(Math.min(progress, 100))
+      
+      // Auto-hide header when scrolling down
       if (scrollTimeoutRef.current) {
         clearTimeout(scrollTimeoutRef.current)
       }
+      setShowHeader(false)
       scrollTimeoutRef.current = setTimeout(() => {
-        setShowHeader(false)
+        setShowHeader(true)
       }, 2000)
     }
 
@@ -86,10 +80,12 @@ const ArticleModal = ({
         clearTimeout(scrollTimeoutRef.current)
       }
     }
-  }, [])
+  }, [article])
 
   // Handle keyboard shortcuts
   useEffect(() => {
+    if (!article) return
+    
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
         console.log('ArticleModal: Escape key pressed, closing modal')
@@ -107,16 +103,29 @@ const ArticleModal = ({
 
     document.addEventListener('keydown', handleKeyDown)
     return () => document.removeEventListener('keydown', handleKeyDown)
-  }, [onClose, isFullscreen, showHeader])
+  }, [onClose, isFullscreen, showHeader, article])
 
   // Auto-hide header after initial load
   useEffect(() => {
+    if (!article) return
+    
     const timer = setTimeout(() => {
       setShowHeader(false)
     }, 3000)
 
     return () => clearTimeout(timer)
-  }, [])
+  }, [article])
+
+  // Early return if no article - AFTER hooks are initialized
+  if (!article) {
+    console.log('ArticleModal: No article provided, not rendering')
+    return null
+  }
+
+  console.log('ArticleModal: Rendering modal for article:', article.title)
+
+  // Check if article is saved
+  const isBookmarked = savedArticles.some(saved => saved.link === article.link)
 
   // Close modal when clicking outside content area
   const handleBackdropClick = (e) => {

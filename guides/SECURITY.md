@@ -14,5 +14,5 @@ currently being supported with security updates.
 
 ## Reporting a Vulnerability
 
-You ca nreport a vulnerability to cybersec@nyuchi.com
-Once the vvulnerability is accepted, and update will occur within a week or less. You will be credited for the update upon release. 
+You can report a vulnerability to cybersec@nyuchi.com
+Once the vulnerability is accepted, an update will occur within a week or less. You will be credited for the update upon release. 
