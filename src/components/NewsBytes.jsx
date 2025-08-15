@@ -6,18 +6,12 @@ import { cn } from '../lib/utils'
 import {
   Play,
   Pause,
-  Volume2,
-  VolumeX,
   Share,
   Bookmark,
   Heart,
-  MessageCircle,
   MoreVertical,
-  X,
-  ChevronDown,
   Maximize2,
   Globe,
-  User,
   SkipBack,
   SkipForward,
   RotateCcw
@@ -29,7 +23,7 @@ import { useAnalytics } from '../hooks/useAnalytics'
 const NewsBytes = ({ 
   currentColors, 
   articles = [], 
-  viewMode = 'grid',
+  viewMode: _viewMode = 'grid',
   // Updated props to match new useFeeds hook
   likedArticles = new Set(),
   bookmarkedArticles = [],
@@ -43,10 +37,10 @@ const NewsBytes = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(true)
+  const [_isMuted, _setIsMuted] = useState(true)
   const [showShareModal, setShowShareModal] = useState(false)
   const [showArticleModal, setShowArticleModal] = useState(false)
-  const [expandedContent, setExpandedContent] = useState(false)
+  const [_expandedContent, _setExpandedContent] = useState(false)
   const [showPlayPause, setShowPlayPause] = useState(false)
   const [showControls, setShowControls] = useState(false)
   const containerRef = useRef(null)
