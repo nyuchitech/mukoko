@@ -4,7 +4,6 @@ import {
   XMarkIcon, 
   ShareIcon, 
   HeartIcon,
-  GlobeAltIcon,
   ClockIcon,
   BookmarkIcon,
   ArrowsPointingOutIcon,
@@ -24,14 +23,7 @@ const ArticleModal = ({
   savedArticles = [],
   onToggleSave 
 }) => {
-  // Early return if no article
-  if (!article) {
-    console.log('ArticleModal: No article provided, not rendering')
-    return null
-  }
-
-  console.log('ArticleModal: Rendering modal for article:', article.title)
-
+  // All hooks must be called before any early returns
   const [isLiked, setIsLiked] = useState(false)
   const [showShareModal, setShowShareModal] = useState(false)
   const [readingProgress, setReadingProgress] = useState(0)
@@ -44,6 +36,14 @@ const ArticleModal = ({
   const modalRef = useRef(null)
   const contentRef = useRef(null)
   const scrollTimeoutRef = useRef(null)
+
+  // Early return if no article (after all hooks)
+  if (!article) {
+    console.log('ArticleModal: No article provided, not rendering')
+    return null
+  }
+
+  console.log('ArticleModal: Rendering modal for article:', article.title)
 
   // Check if article is saved
   const isBookmarked = savedArticles.some(saved => saved.link === article.link)

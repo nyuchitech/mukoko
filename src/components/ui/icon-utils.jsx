@@ -3,6 +3,7 @@ import React from 'react'
 import { IconButton } from './icon-button'
 import { IconGroup } from './icon-group'
 import { cn } from '@/lib/utils'
+import { SunIcon, MoonIcon, ComputerDesktopIcon, Squares2X2Icon, VideoCameraIcon } from '@heroicons/react/24/outline'
 
 // Simple action button pattern
 export const ActionIconButton = ({ icon: Icon, tooltip, className, ...props }) => (
@@ -17,8 +18,6 @@ export const ActionIconButton = ({ icon: Icon, tooltip, className, ...props }) =
 
 // Theme toggle group pattern (common in the app)
 export const ThemeToggleButtons = ({ theme, onThemeChange, className }) => {
-  const { SunIcon, MoonIcon, ComputerDesktopIcon } = require('@heroicons/react/24/outline')
-  
   return (
     <IconGroup className={cn("bg-card border rounded-lg p-0.5", className)}>
       <IconButton 
@@ -56,8 +55,6 @@ export const ThemeToggleButtons = ({ theme, onThemeChange, className }) => {
 
 // View toggle pattern (from the original app)
 export const ViewToggleButtons = ({ currentView, setCurrentView, className }) => {
-  const { Squares2X2Icon, VideoCameraIcon } = require('@heroicons/react/24/outline')
-  
   return (
     <IconGroup className={cn("bg-card border rounded-lg p-0.5", className)}>
       <IconButton

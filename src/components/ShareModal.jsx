@@ -24,7 +24,7 @@ const ShareModal = ({ article, isOpen, onClose, currentColors }) => {
       await navigator.clipboard.writeText(shareUrl)
       setCopied(true)
       setTimeout(() => setCopied(false), 2000)
-    } catch (err) {
+    } catch {
       // Fallback for older browsers
       const textArea = document.createElement('textarea')
       textArea.value = shareUrl
