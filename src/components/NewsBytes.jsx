@@ -6,18 +6,12 @@ import { cn } from '../lib/utils'
 import {
   Play,
   Pause,
-  Volume2,
-  VolumeX,
   Share,
   Bookmark,
   Heart,
-  MessageCircle,
   MoreVertical,
-  X,
-  ChevronDown,
   Maximize2,
   Globe,
-  User,
   SkipBack,
   SkipForward,
   RotateCcw
@@ -29,7 +23,6 @@ import { useAnalytics } from '../hooks/useAnalytics'
 const NewsBytes = ({ 
   currentColors, 
   articles = [], 
-  viewMode = 'grid',
   // Updated props to match new useFeeds hook
   likedArticles = new Set(),
   bookmarkedArticles = [],
@@ -43,10 +36,8 @@ const NewsBytes = ({
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0)
   const [isPlaying, setIsPlaying] = useState(false)
-  const [isMuted, setIsMuted] = useState(true)
   const [showShareModal, setShowShareModal] = useState(false)
   const [showArticleModal, setShowArticleModal] = useState(false)
-  const [expandedContent, setExpandedContent] = useState(false)
   const [showPlayPause, setShowPlayPause] = useState(false)
   const [showControls, setShowControls] = useState(false)
   const containerRef = useRef(null)
@@ -402,7 +393,7 @@ const NewsBytes = ({
             No Visual Stories Available
           </h3>
           <p className={`${currentColors.textMuted} max-w-md`}>
-            We're working on bringing you more visual content soon!
+            We&rsquo;re working on bringing you more visual content soon!
           </p>
           <Button 
             variant="outline" 
