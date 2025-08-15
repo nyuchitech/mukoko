@@ -1,10 +1,27 @@
-import { useTheme } from "next-themes"
 import { Toaster as Sonner } from "sonner"
 
+// Simple theme detection hook for Vite React (not Next.js)
+const useSystemTheme = () => {
+  // Check if user has a theme preference in localStorage or use system preference
+  const savedTheme = localStorage.getItem('theme')
+  if (savedTheme && (savedTheme === 'light' || savedTheme === 'dark')) {
+    return savedTheme
+  }
+  
+  // Fall back to system preference
+  if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+    return 'dark'
+  }
+  
+  return 'light'
+}
+
 const Toaster = ({
+  theme: themeOverride,
   ...props
 }) => {
-  const { theme = "system" } = useTheme()
+  const systemTheme = useSystemTheme()
+  const theme = themeOverride || systemTheme
 
   return (
     <Sonner
