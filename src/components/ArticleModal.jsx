@@ -4,7 +4,6 @@ import {
   XMarkIcon, 
   ShareIcon, 
   HeartIcon,
-  GlobeAltIcon,
   ClockIcon,
   BookmarkIcon,
   ArrowsPointingOutIcon,
@@ -24,14 +23,7 @@ const ArticleModal = ({
   savedArticles = [],
   onToggleSave 
 }) => {
-  // Early return if no article
-  if (!article) {
-    console.log('ArticleModal: No article provided, not rendering')
-    return null
-  }
-
-  console.log('ArticleModal: Rendering modal for article:', article.title)
-
+  // Initialize all hooks first (before any conditional returns)
   const [isLiked, setIsLiked] = useState(false)
   const [showShareModal, setShowShareModal] = useState(false)
   const [readingProgress, setReadingProgress] = useState(0)
@@ -44,9 +36,6 @@ const ArticleModal = ({
   const modalRef = useRef(null)
   const contentRef = useRef(null)
   const scrollTimeoutRef = useRef(null)
-
-  // Check if article is saved
-  const isBookmarked = savedArticles.some(saved => saved.link === article.link)
 
   // Calculate reading time
   useEffect(() => {
@@ -117,6 +106,17 @@ const ArticleModal = ({
 
     return () => clearTimeout(timer)
   }, [])
+
+  // Early return if no article (after ALL hooks)
+  if (!article) {
+    console.log('ArticleModal: No article provided, not rendering')
+    return null
+  }
+
+  console.log('ArticleModal: Rendering modal for article:', article.title)
+
+  // Check if article is saved
+  const isBookmarked = savedArticles.some(saved => saved.link === article.link)
 
   // Close modal when clicking outside content area
   const handleBackdropClick = (e) => {

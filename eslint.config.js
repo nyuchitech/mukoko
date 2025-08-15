@@ -37,6 +37,15 @@ export default [
         localStorage: 'readonly',
         sessionStorage: 'readonly',
         fetch: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+        URL: 'readonly',
+        URLSearchParams: 'readonly',
+        AbortController: 'readonly',
+        FormData: 'readonly',
+        Headers: 'readonly',
       },
     },
     settings: {
@@ -65,6 +74,33 @@ export default [
       'no-console': 'warn',
       'prefer-const': 'error',
       'no-var': 'error',
+    },
+  },
+  
+  // Node.js scripts config
+  {
+    files: ['**/*.config.js', 'scripts/**/*.js', 'init_*.js'],
+    languageOptions: {
+      ecmaVersion: 2022,
+      sourceType: 'module',
+      globals: {
+        console: 'readonly',
+        process: 'readonly',
+        Buffer: 'readonly',
+        __dirname: 'readonly',
+        __filename: 'readonly',
+        global: 'readonly',
+        require: 'readonly',
+        module: 'readonly',
+        exports: 'readonly',
+        setTimeout: 'readonly',
+        clearTimeout: 'readonly',
+        setInterval: 'readonly',
+        clearInterval: 'readonly',
+      },
+    },
+    rules: {
+      'no-console': 'off', // Allow console in Node.js scripts
     },
   },
   

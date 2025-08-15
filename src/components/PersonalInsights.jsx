@@ -406,7 +406,7 @@ const PersonalInsights = ({ currentColors, allFeeds, lastUpdated }) => {
     
     let streak = 0
     const today = new Date().toDateString()
-    let currentDate = new Date()
+    const currentDate = new Date()
     
     for (let i = 0; i < dates.length; i++) {
       const checkDate = currentDate.toDateString()
