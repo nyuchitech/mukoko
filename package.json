@@ -64,7 +64,7 @@
     "focus-trap-react": "^10.2.3",
     "framer-motion": "^11.0.3",
     "itty-router": "^4.0.27",
-    "lru-cache": "^10.2.0",
+    "lru-cache": "^11.1.0",
     "lucide-react": "^0.263.1",
     "mongodb": "^6.18.0",
     "node-fetch": "^3.3.2",
