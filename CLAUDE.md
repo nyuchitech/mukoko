@@ -421,7 +421,7 @@ window.MukokoBridge = {
 ### Design Rules
 - Button radius: `12px`, Card radius: `16px`
 - Touch targets: `44x44px` minimum
-- Zimbabwe flag strip: 4px vertical left edge (hidden < 480px)
+- Five African Minerals strip: 4px vertical left edge (Tanzanite → Cobalt → Gold → Malachite → Terracotta, hidden < 480px)
 - Wordmarks: **always lowercase** (`mukoko`, `nyuchi`, `shamwari`)
 - Contrast: WCAG AAA (7:1+) — non-negotiable
 - Light/dark mode: all colors auto-adapt
