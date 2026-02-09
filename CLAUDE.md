@@ -36,16 +36,20 @@ BUNDU (Container)     — The wilderness. Parent brand. SEPARATE APP.
 
 Six interconnected apps sharing one identity, one AI engine, one reputation system, and one token economy:
 
-| App | Domain | Purpose | Status |
-|-----|--------|---------|--------|
-| **Mukoko ID** | `id.mukoko.com` | Unified identity, Digital Twin, SSO (Stytch) | Existing |
-| **Clips** | `clips.mukoko.com` | Context-rich news from trusted sources | Migrating from mukoko-news |
-| **Pulse** | `pulse.mukoko.com` | Trending short-form content, African creativity | New build |
-| **Connect** | `connect.mukoko.com` | Interest-based Circles (communities) | New build |
-| **Novels** | `novels.mukoko.com` | African author platform, web novels | New build |
-| **Events** | `events.mukoko.com` | Cultural gatherings, ticketing | Migrating from nhimbe |
+| App | Domain | Purpose | Standalone Repo |
+|-----|--------|---------|-----------------|
+| **Mukoko ID** | `id.mukoko.com` | Unified identity, Digital Twin, Memory File, SSO (Stytch) | `mukoko-auth` |
+| **Clips** | `clips.mukoko.com` | Context-rich news feed from trusted sources | `mukoko-news` |
+| **Pulse** | `pulse.mukoko.com` | Personalized super app feed — aggregates all apps | **This monorepo** |
+| **Connect** | `connect.mukoko.com` | Interest-based Circles (communities) | `mukoko-connect` (new) |
+| **Novels** | `novels.mukoko.com` | African author platform, web novels | `mukoko-novels` (new) |
+| **Events** | `events.mukoko.com` | Cultural gatherings, ticketing | `nhimbe` |
 
-**Utility mini-apps:** Weather, future Marketplace, Transport.
+**Pulse** is the super app's unified feed. It aggregates content from Clips, Events, Connect, Novels, and more — personalized by the **Memory File** (see below). Pulse lives in this monorepo, not in a standalone repo.
+
+**Clips** (`mukoko-news` repo) is the news/articles app. It also includes **Bytes** (TikTok-style short-form scrolling) in its standalone version. Bytes stays in the standalone app; Pulse is the super app's own aggregated feed.
+
+**Utility mini-apps:** Weather (`weather.mukoko.com`, repo: `mukoko-weather`), future Marketplace, Transport.
 
 **Separate products using Mukoko ID (Stytch SSO):** Nyuchi Learning, Zimbabwe Travel, Bundu Family.
 
@@ -84,6 +88,31 @@ MukokoBridge = communication layer between shell and mini-apps
 Workers = translation layer (routing, auth verification, caching)
 Containers = heavy compute (AI inference, media processing, blockchain)
 ```
+
+### Mini-App Architecture — Two Frontends, One Backend
+
+Each ecosystem app (Clips, Pulse, Connect, Novels, Events, Weather) exists as **two frontends** sharing a single backend:
+
+```
+┌─────────────────────────────────────────────────────────┐
+│  STANDALONE (own repo)          SUPER APP (this monorepo)│
+│  ─────────────────────          ─────────────────────── │
+│  Full PWA at *.mukoko.com       Preact UI in mini-apps/ │
+│  Own routing, own UI            @mukoko/ui components    │
+│  Direct API calls               @mukoko/bridge for shell │
+│  Works independently            Deep wallet/auth/nav     │
+│                                 integration              │
+│         └──────── Both consume the same backend API ────┘│
+│                   (standalone repo owns the backend)     │
+└─────────────────────────────────────────────────────────┘
+```
+
+**Why two frontends?**
+- The standalone PWA ensures each app works outside the super app (web users, direct links, app store alternatives)
+- The super app frontend ensures consistent UX inside the Flutter shell with access to native capabilities via MukokoBridge
+- Backends are never duplicated — the super app frontend calls the same API as the standalone PWA
+
+**Rule:** The standalone repo owns the backend + standalone frontend. This monorepo owns the super app frontend only. Do not duplicate backend logic here.
 
 ---
 
@@ -128,15 +157,62 @@ Stytch is the auth provider for the entire ecosystem. NOT Supabase.
 
 ---
 
+## MEMORY FILE — THE PERSONALIZATION CORE
+
+The **Memory File** is the central personalization artifact for each user. It is the single source of truth that the entire ecosystem uses to customize the experience.
+
+### What it is
+
+- A structured profile co-created by **Nyuchi Honey** (on-device learning) and **Mukoko ID** (identity)
+- Stored in **Mukoko ID** (the identity layer), not on-device only
+- **Editable by the user** — full data sovereignty, the user can view, modify, and delete their Memory File
+- The memory for **Shamwari AI**, **Pulse feed curation**, and all app personalization
+
+### What it contains
+
+- Interest map (32 categories, weighted by engagement)
+- Content preferences (formats, sources, languages)
+- Interaction patterns (reading habits, time-of-day, session length)
+- Explicit preferences (user-set, overrides inferred data)
+- Cross-app context (what the user does in Clips informs Pulse, Connect, etc.)
+
+### How it flows
+
+```
+Nyuchi Honey (on-device)          Mukoko ID (cloud)
+┌───────────────────┐             ┌───────────────────┐
+│ Observes behavior │────sync────▶│ Stores Memory File│
+│ Learns locally    │             │ User can edit      │
+│ Privacy-first     │◀───read────│ API access for     │
+└───────────────────┘             │ Shamwari + Pulse   │
+                                  └───────────────────┘
+                                          │
+                    ┌─────────────────────┤
+                    ▼                     ▼
+              Pulse Feed            Shamwari AI
+              (personalized         (context-aware
+               aggregation)          companion)
+```
+
+### Rules
+
+- Honey learns on-device — raw behavioral data never leaves the device
+- Honey syncs a **summarized** Memory File to Mukoko ID (not raw events)
+- The user can always see and edit their Memory File
+- Shamwari and Pulse read the Memory File via Mukoko ID API
+- Deleting the Memory File resets all personalization
+
+---
+
 ## EXISTING INFRASTRUCTURE
 
 ### Cloudflare Workers (15 deployed)
 | Worker | Purpose |
 |--------|---------|
-| `mukoko-news-backend` | News aggregation (app.mukoko.com) — becomes Clips API |
+| `mukoko-news-backend` | News/Clips feed + Bytes (app.mukoko.com) — owned by mukoko-news repo |
 | `mukoko-id-api` | Authentication, profiles — Mukoko ID |
-| `mukoko-nhimbe-api` | Events — becomes Events API |
-| `mukoko-events-api` | Events API |
+| `mukoko-nhimbe-api` | Events (canonical — owned by nhimbe repo) |
+| `mukoko-events-api` | Events (legacy duplicate — consolidate into nhimbe) |
 | `nyuchi_api` | Core Nyuchi platform |
 | `nyuchi-brand-assets` | Brand CDN (assets.nyuchi.com) |
 | `hararemetro-redirect` | Legacy redirect |
@@ -144,13 +220,22 @@ Stytch is the auth provider for the entire ecosystem. NOT Supabase.
 **Note:** Existing workers use itty-router. New workers use Hono. Do not change existing worker routers unless explicitly migrating.
 
 ### Connected Repositories (nyuchitech org)
-| Repo | Migrates To |
-|------|-------------|
-| `mukoko-news` | `mini-apps/clips/` + `services/clips-api/` |
-| `mukoko-weather` | `mini-apps/weather/` + `services/weather-api/` |
-| `mukoko-auth` | `services/id-api/` |
-| `nhimbe` | `mini-apps/events/` + `services/events-api/` |
-| `brand-warehouse` | `packages/design-system/assets/` |
+
+Each ecosystem app has its own standalone repository containing its backend and standalone PWA frontend. The monorepo does **not** replace these repos — it provides the **super app frontend** for each app, ensuring a consistent in-app experience.
+
+| Standalone Repo | Owns | Super App Frontend In |
+|-----------------|------|-----------------------|
+| `mukoko-news` | Clips + Bytes backend + standalone PWA | `mini-apps/clips/` |
+| `nhimbe` | Events backend + standalone PWA | `mini-apps/events/` |
+| `mukoko-weather` | Weather backend + standalone PWA | `mini-apps/weather/` |
+| `mukoko-auth` | Auth backend (Stytch) | `services/id-api/` |
+| `mukoko-connect` | Connect backend + standalone PWA (new) | `mini-apps/connect/` |
+| `mukoko-novels` | Novels backend + standalone PWA (new) | `mini-apps/novels/` |
+| `brand-warehouse` | Brand assets CDN | `packages/design-system/assets/` |
+
+**Two frontends per app:**
+- **Standalone PWA** (in the app's own repo) — full app at `*.mukoko.com`, works independently
+- **Super app frontend** (in this monorepo's `mini-apps/`) — Preact UI loaded in the Flutter shell's WebView, uses `@mukoko/bridge` for deep integration with wallet, auth, navigation, and Shamwari
 
 Separate products (use Mukoko ID SSO, NOT in this repo): `learning`, `zimbabwe-travel`, `bundu-family`
 
@@ -177,28 +262,24 @@ mukoko/
 │   │   └── bridge/                # MukokoBridge JS injection
 │   └── pubspec.yaml
 │
-├── mini-apps/                     # Preact PWAs (deployed to Vercel)
-│   ├── clips/                     # News (from mukoko-news)
-│   ├── pulse/                     # Trending content
-│   ├── connect/                   # Circles / communities
-│   ├── novels/                    # Author platform
-│   ├── events/                    # From nhimbe
-│   ├── weather/                   # Utility
-│   └── _template/                 # Starter for new mini-apps
+├── mini-apps/                     # Super app frontends (Preact, loaded in Flutter WebView)
+│   ├── pulse/                     # Personalized aggregated feed (monorepo-native, no standalone repo)
+│   ├── clips/                     # News — super app UI (backend in mukoko-news repo)
+│   ├── connect/                   # Circles — super app UI (backend in mukoko-connect repo)
+│   ├── novels/                    # Author platform — super app UI (backend in mukoko-novels repo)
+│   ├── events/                    # Events — super app UI (backend in nhimbe repo)
+│   ├── weather/                   # Weather — super app UI (backend in mukoko-weather repo)
+│   └── _template/                 # Starter for new super app mini-app frontends
 │
-├── services/                      # Cloudflare Workers + Containers
-│   ├── gateway/                   # API gateway
-│   ├── id-api/                    # Mukoko ID (Stytch)
-│   ├── clips-api/                 # News/Clips
-│   ├── events-api/                # Events
-│   ├── pulse-api/                 # Trending content
-│   ├── connect-api/               # Circles
-│   ├── novels-api/                # Author platform
-│   ├── weather-api/               # Weather
-│   ├── wallet-api/                # Payments + tokens
+├── services/                      # Cloudflare Workers (super app infrastructure only)
+│   ├── gateway/                   # API gateway — routing + Stytch session verification
+│   ├── id-api/                    # Mukoko ID (Stytch auth)
+│   ├── wallet-api/                # Payments + MUKOKO tokens
 │   ├── shamwari-api/              # AI companion (Cloudflare AI)
 │   ├── miniapp-registry/          # Mini-app manifest + R2 assets
 │   └── digital-twin/              # NFT + reputation
+│   # NOTE: App-specific backends (clips, pulse, events, connect, novels, weather)
+│   #        live in their standalone repos, NOT here.
 │
 ├── honey/                         # Nuchi Honey (isolated, NOT a pnpm workspace)
 │   ├── Dockerfile
@@ -440,6 +521,8 @@ Zimbabwe market reality: data is expensive, connectivity is intermittent.
 10. **DO NOT** capitalize brand wordmarks. Always lowercase: `mukoko`, `nyuchi`, `shamwari`.
 11. **DO NOT** change existing worker routers (itty-router) unless explicitly migrating. New workers use Hono.
 12. **DO NOT** treat Bundu Family as part of this repo. It is a separate app.
+13. **DO NOT** duplicate backend logic in this monorepo. Each app's backend lives in its standalone repo. The `mini-apps/` directory contains super app frontends only.
+14. **DO NOT** confuse the super app frontend (`mini-apps/`) with the standalone PWA. They are separate codebases sharing the same backend API.
 
 ---
 
