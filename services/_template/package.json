@@ -13,7 +13,7 @@
     "clean": "rm -rf dist"
   },
   "dependencies": {
-    "hono": "^4.7.0",
+    "hono": "^4.12.4",
     "@mukoko/types": "workspace:*"
   },
   "devDependencies": {
