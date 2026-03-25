@@ -27,6 +27,7 @@ const columns = [
   {
     heading: "Resources",
     links: [
+      { label: "Blog", href: "/blog", internal: true },
       { label: "Brand Kit", href: "https://assets.nyuchi.com" },
       { label: "API Status", href: "https://status.mukoko.com" },
     ],

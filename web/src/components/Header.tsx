@@ -8,6 +8,7 @@ const navLinks = [
   { href: "#privacy", label: "Privacy" },
   { href: "#how-it-works", label: "How It Works" },
   { href: "#ubuntu", label: "Ubuntu" },
+  { href: "/blog", label: "Blog", internal: true },
   { href: "/manifesto", label: "Manifesto", internal: true },
 ];
 
