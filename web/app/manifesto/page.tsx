@@ -39,7 +39,7 @@ export default function ManifestoPage() {
             </div>
             <div className="hero-cover__meta-item">
               <strong>Published</strong>
-              2025
+              2026
             </div>
             <div className="hero-cover__meta-item">
               <strong>Principle</strong>
@@ -123,53 +123,58 @@ export default function ManifestoPage() {
         <section className="content-section">
           <p className="content-section__number">02 — The Ecosystem</p>
           <h2 className="content-section__title">
-            Six apps.<br />
+            15 mini-apps.<br />
             One <em>hive</em>.
           </h2>
 
           <p className="body-large">
-            mukoko is not one app. It is six interconnected apps sharing one
-            identity, one AI engine, one reputation system, and one token economy.
+            mukoko is not one app. It is 15 interconnected mini-apps sharing one
+            identity, one AI companion, one reputation system, and one token economy.
           </p>
 
           <div className="code-tree">
             <span className="ct-anchor">mukoko ID — Identity Layer</span>
-            <span>├─ <span className="ct-name">Clips</span> — context-rich news from Africa and the world</span>
+            <span>├─ <span className="ct-name">Campfire</span> — messaging, payments, and community in one conversation</span>
             <span>├─ <span className="ct-name">Pulse</span> — your personalised super app feed</span>
-            <span>├─ <span className="ct-name">Connect</span> — interest-based Circles (communities)</span>
+            <span>├─ <span className="ct-name">Mukoko News</span> — context-rich news from Africa and the world</span>
+            <span>├─ <span className="ct-name">Bytes</span> — short-form video, African stories in seconds</span>
+            <span>├─ <span className="ct-name">Circles</span> — interest-based communities</span>
+            <span>├─ <span className="ct-name">Nhimbe</span> — cultural gatherings, ticketing</span>
             <span>├─ <span className="ct-name">Novels</span> — African author platform, web fiction</span>
-            <span>├─ <span className="ct-name">Events</span> — cultural gatherings, ticketing</span>
-            <span>└─ <span className="ct-name">Weather</span> — hyperlocal forecasts for African life</span>
+            <span>├─ <span className="ct-name">BushTrade</span> — local marketplace</span>
+            <span>├─ <span className="ct-name">Mukoko Lingo</span> — African language learning</span>
+            <span>├─ <span className="ct-name">Weather</span> — hyperlocal forecasts for African life</span>
+            <span>└─ <span className="ct-name">Transport</span> — routes and ridesharing (coming)</span>
             <span>&nbsp;</span>
-            <span className="ct-infra">Shared infrastructure beneath all six:</span>
-            <span>{"  "}shamwari AI · Memory File · MUKOKO tokens · MukokoBridge</span>
+            <span className="ct-infra">Shared infrastructure beneath all:</span>
+            <span>{"  "}shamwari AI · Your Honey · MUKOKO tokens · MukokoBridge</span>
           </div>
 
           <p className="body-text">
-            Every app is <strong>standalone</strong>. You can use Clips to read
+            Every app is <strong>standalone</strong>. You can use Mukoko News to read
             news without ever touching Novels. But when you use them together,
             something emerges that none of them could be alone.
           </p>
 
           <p className="body-text">
-            Your interests in Clips inform your Pulse feed. Your Pulse feed
-            surfaces Events near you. Your Events attendance builds your reputation
-            in Connect. Your reputation earns MUKOKO tokens. This is{" "}
+            Your interests in Mukoko News inform your Pulse feed. Your Pulse feed
+            surfaces Nhimbe events near you. Your attendance builds your reputation
+            in Circles. Your reputation earns MUKOKO tokens. This is{" "}
             <strong>compound community value</strong>.
           </p>
         </section>
 
-        {/* 03 — Memory File */}
+        {/* 03 — Your Honey */}
         <section className="content-section">
           <p className="content-section__number">03 — Personalisation Without Surveillance</p>
           <h2 className="content-section__title">
-            Your Memory File.<br />
+            Your Honey.<br />
             Never a <em>product</em>.
           </h2>
 
           <p className="body-large">
-            At the centre of mukoko is your <strong>Memory File</strong> — a
-            structured profile that shapes how every app works for you. It knows
+            At the centre of mukoko is <strong>Your Honey</strong> — a personal AI
+            that runs on your phone, shaping how every app works for you. It knows
             what you like to read, how long you spend on articles, which communities
             you engage with, and which topics you return to.
           </p>
@@ -182,7 +187,7 @@ export default function ManifestoPage() {
           <div className="card-grid">
             <div className="mineral-card mineral-card--cobalt">
               <span className="mineral-card__icon" aria-hidden="true">🐝</span>
-              <p className="mineral-card__title">Nyuchi Honey</p>
+              <p className="mineral-card__title">Your Honey</p>
               <p className="mineral-card__body">
                 On-device AI that observes your behaviour and learns your
                 preferences. Raw data never leaves your phone. Ever.
@@ -192,7 +197,7 @@ export default function ManifestoPage() {
               <span className="mineral-card__icon" aria-hidden="true">🪪</span>
               <p className="mineral-card__title">Mukoko ID</p>
               <p className="mineral-card__body">
-                Your cloud identity. Stores only summarised Memory File data —
+                Your cloud identity. Stores only summarised Your Honey data —
                 never raw events. You can read, edit, or delete it at any time.
               </p>
             </div>
@@ -200,8 +205,8 @@ export default function ManifestoPage() {
               <span className="mineral-card__icon" aria-hidden="true">🤖</span>
               <p className="mineral-card__title">shamwari AI</p>
               <p className="mineral-card__body">
-                Reads your Memory File to give context-aware assistance across
-                all six apps. Only what you choose to share.
+                Reads your Your Honey to give context-aware assistance across
+                all 15 apps. Only what you choose to share.
               </p>
             </div>
             <div className="mineral-card mineral-card--terracotta">
@@ -209,7 +214,7 @@ export default function ManifestoPage() {
               <p className="mineral-card__title">Data Sovereignty</p>
               <p className="mineral-card__body">
                 Full transparency. Full editability. Full deletability. Your
-                Memory File is not a black box — it is your possession.
+                Your Honey is not a black box — it is your possession.
               </p>
             </div>
           </div>
@@ -387,7 +392,7 @@ export default function ManifestoPage() {
                     "Honey learns on your phone. Summaries sync to the cloud. Never the raw events.",
                 },
                 {
-                  pledge: "Let you see, edit, and delete your Memory File.",
+                  pledge: "Let you see, edit, and delete your Your Honey.",
                   detail:
                     "No hidden profiles. Full transparency. Full control.",
                 },
@@ -414,7 +419,7 @@ export default function ManifestoPage() {
                 {
                   pledge: "Keep the hive open.",
                   detail:
-                    "Standalone PWAs for all six apps. You can access mukoko without the super app.",
+                    "Standalone PWAs for all 15 apps. You can access mukoko without the super app.",
                 },
               ] as Array<{ pledge: string; detail: string }>
             ).map((item, i) => (
@@ -485,7 +490,7 @@ export default function ManifestoPage() {
           <p className="content-closing__sub">Shona — "I am because we are."</p>
           <p className="content-closing__tagline">This is the hive. You are the bee.</p>
           <p className="content-closing__byline">
-            Nyuchi Africa · mukoko · 2025<br />
+            Nyuchi Africa · mukoko · 2026<br />
             Bryan · Founder<br />
             Built from Zimbabwe, for Africa and the world.
           </p>
