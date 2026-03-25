@@ -15,7 +15,7 @@ export default function ManifestoPage() {
     <>
     <HoneycombBackgroundLoader />
     <Header />
-    <div className="manifesto-page">
+    <main id="main-content" className="manifesto-page">
       {/* Cover */}
       <div className="manifesto-cover">
         <div className="manifesto-cover__inner">
@@ -490,15 +490,14 @@ export default function ManifestoPage() {
             Built from Zimbabwe, for Africa and the world.
           </p>
           <Link
-            className="manifesto-back"
-            style={{ marginTop: "2.5rem" }}
+            className="manifesto-back mt-5"
             href="/"
           >
             ← Back to mukoko
           </Link>
         </div>
       </div>
-    </div>
+    </main>
     <Footer />
     </>
   );

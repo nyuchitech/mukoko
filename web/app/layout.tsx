@@ -28,14 +28,24 @@ export const metadata: Metadata = {
   title: "mukoko — I am because we are",
   description:
     "mukoko is a digital twin social ecosystem for Africa. Six apps, one identity, your sovereignty.",
+  metadataBase: new URL("https://mukoko.com"),
   openGraph: {
     title: "mukoko — I am because we are",
     description:
       "A digital twin social ecosystem for Africa. Six apps, one identity, your sovereignty.",
     type: "website",
     url: "https://mukoko.com",
+    siteName: "mukoko",
+    locale: "en_US",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "mukoko — I am because we are",
+    description:
+      "A digital twin social ecosystem for Africa. Six apps, one identity, your sovereignty.",
   },
   icons: { icon: "/favicon.svg" },
+  robots: { index: true, follow: true },
 };
 
 export default function RootLayout({
@@ -49,7 +59,12 @@ export default function RootLayout({
       className={`dark ${notoSerif.variable} ${notoSans.variable} ${jetbrainsMono.variable}`}
       style={{ colorScheme: "dark" }}
     >
-      <body>{children}</body>
+      <body>
+        <a href="#main-content" className="skip-to-content">
+          Skip to content
+        </a>
+        {children}
+      </body>
     </html>
   );
 }

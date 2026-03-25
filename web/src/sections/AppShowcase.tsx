@@ -59,7 +59,9 @@ export function AppShowcase() {
             key={app.name}
             style={{ "--card-accent": app.color, "--card-bg": app.colorBg } as React.CSSProperties}
           >
-            <span className="app-card__icon">{app.icon}</span>
+            <span className="app-card__icon" aria-hidden="true">
+              {app.icon}
+            </span>
             <h3 className="app-card__name">{app.name}</h3>
             <p className="app-card__description text-muted">{app.description}</p>
           </div>

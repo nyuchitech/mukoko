@@ -27,8 +27,6 @@ const columns = [
   {
     heading: "Resources",
     links: [
-      { label: "Blog", href: "/blog", internal: true },
-      { label: "Documentation", href: "/docs", internal: true },
       { label: "Brand Kit", href: "https://assets.nyuchi.com" },
       { label: "API Status", href: "https://status.mukoko.com" },
     ],
@@ -39,6 +37,7 @@ const columns = [
       { label: "Privacy Policy", href: "/privacy", internal: true },
       { label: "Terms of Service", href: "/terms", internal: true },
       { label: "Cookie Policy", href: "/cookies", internal: true },
+      { label: "Acceptable Use", href: "/acceptable-use", internal: true },
       { label: "Security", href: "mailto:security@nyuchi.com" },
     ],
   },
