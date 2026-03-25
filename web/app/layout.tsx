@@ -46,7 +46,8 @@ export default function RootLayout({
   return (
     <html
       lang="en"
-      className={`${notoSerif.variable} ${notoSans.variable} ${jetbrainsMono.variable}`}
+      className={`dark ${notoSerif.variable} ${notoSans.variable} ${jetbrainsMono.variable}`}
+      style={{ colorScheme: "dark" }}
     >
       <body>{children}</body>
     </html>

@@ -1,5 +1,8 @@
 import type { Metadata } from "next";
 import Link from "next/link";
+import { Header } from "@/components/Header";
+import { Footer } from "@/sections/Footer";
+import { HoneycombBackgroundLoader } from "@/components/HoneycombBackgroundLoader";
 
 export const metadata: Metadata = {
   title: "The Hive Manifesto — mukoko",
@@ -9,15 +12,10 @@ export const metadata: Metadata = {
 
 export default function ManifestoPage() {
   return (
+    <>
+    <HoneycombBackgroundLoader />
+    <Header />
     <div className="manifesto-page">
-      {/* Sticky header */}
-      <div className="manifesto-header">
-        <Link className="manifesto-back" href="/">
-          ← mukoko
-        </Link>
-        <span className="manifesto-header-meta">Manifesto · v1.0 · 2025</span>
-      </div>
-
       {/* Cover */}
       <div className="manifesto-cover">
         <div className="manifesto-cover__inner">
@@ -501,5 +499,7 @@ export default function ManifestoPage() {
         </div>
       </div>
     </div>
+    <Footer />
+    </>
   );
 }
