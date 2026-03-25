@@ -351,24 +351,24 @@ mukoko/
 
 ### Prerequisites
 
-| Tool    | Version  | Notes                           |
-| ------- | -------- | ------------------------------- |
-| Node.js | 22+      | Pinned in `.nvmrc`              |
-| pnpm    | 9.15.4+  | Pinned in `package.json`        |
-| Flutter | Latest   | For `app/` development          |
-| Python  | 3.12+    | For `honey/` only               |
-| Docker  | Latest   | For `honey/` local dev          |
+| Tool    | Version | Notes                    |
+| ------- | ------- | ------------------------ |
+| Node.js | 22+     | Pinned in `.nvmrc`       |
+| pnpm    | 9.15.4+ | Pinned in `package.json` |
+| Flutter | Latest  | For `app/` development   |
+| Python  | 3.12+   | For `honey/` only        |
+| Docker  | Latest  | For `honey/` local dev   |
 
 ### Root Configuration Files
 
-| File               | Purpose                                                          |
-| ------------------ | ---------------------------------------------------------------- |
-| `turbo.json`       | Turborepo task graph (build, dev, lint, typecheck, test, deploy) |
-| `pnpm-workspace.yaml` | Workspace: `packages/*`, `services/*`, `mini-apps/*`, `web`  |
-| `eslint.config.mjs`   | Root ESLint config — uses `@mukoko/eslint-config`             |
-| `.prettierrc`      | Prettier: semicolons, 2-space indent, 100 char width, single quotes |
-| `.nvmrc`           | Locks Node to v22                                                |
-| `.npmrc`           | Auto-install peers, no strict peer deps                          |
+| File                  | Purpose                                                             |
+| --------------------- | ------------------------------------------------------------------- |
+| `turbo.json`          | Turborepo task graph (build, dev, lint, typecheck, test, deploy)    |
+| `pnpm-workspace.yaml` | Workspace: `packages/*`, `services/*`, `mini-apps/*`, `web`         |
+| `eslint.config.mjs`   | Root ESLint config — uses `@mukoko/eslint-config`                   |
+| `.prettierrc`         | Prettier: semicolons, 2-space indent, 100 char width, single quotes |
+| `.nvmrc`              | Locks Node to v22                                                   |
+| `.npmrc`              | Auto-install peers, no strict peer deps                             |
 
 ### Git Hooks (Husky + lint-staged)
 
@@ -376,18 +376,18 @@ Pre-commit hook runs `lint-staged` automatically on staged files. Configured via
 
 ### Key Dependency Versions
 
-| Package      | Version | Used In                |
-| ------------ | ------- | ---------------------- |
-| turbo        | 2.4.0   | Root monorepo          |
-| typescript   | 5.7.0   | All TS packages        |
-| preact       | 10.25.0 | Mini-apps              |
-| vite         | 6.0     | Mini-apps              |
-| hono         | 4.12.8  | New workers/services   |
-| wrangler     | 4.0.0   | Worker deployment      |
-| next         | 15      | `web/` landing page    |
-| react        | 19      | `web/` only (NOT mini-apps) |
-| eslint       | 10.0.0  | Linting                |
-| prettier     | 3.4.0   | Formatting             |
+| Package    | Version | Used In                     |
+| ---------- | ------- | --------------------------- |
+| turbo      | 2.4.0   | Root monorepo               |
+| typescript | 5.7.0   | All TS packages             |
+| preact     | 10.25.0 | Mini-apps                   |
+| vite       | 6.0     | Mini-apps                   |
+| hono       | 4.12.8  | New workers/services        |
+| wrangler   | 4.0.0   | Worker deployment           |
+| next       | 15      | `web/` landing page         |
+| react      | 19      | `web/` only (NOT mini-apps) |
+| eslint     | 10.0.0  | Linting                     |
+| prettier   | 3.4.0   | Formatting                  |
 
 ---
 
@@ -458,14 +458,14 @@ Uses pnpm v4 action, Node 22, Turborepo cache. Concurrency group cancels in-prog
 
 ### Code Ownership (`.github/CODEOWNERS`)
 
-| Path                    | Team                  |
-| ----------------------- | --------------------- |
-| Root config             | `@nyuchitech/core`    |
-| `app/`                  | `@nyuchitech/mobile`  |
-| `packages/design-system/` | `@nyuchitech/design` |
-| `services/`             | `@nyuchitech/backend` |
-| `honey/`                | `@nyuchitech/ai`      |
-| `mini-apps/` + `web/`   | `@nyuchitech/frontend`|
+| Path                      | Team                   |
+| ------------------------- | ---------------------- |
+| Root config               | `@nyuchitech/core`     |
+| `app/`                    | `@nyuchitech/mobile`   |
+| `packages/design-system/` | `@nyuchitech/design`   |
+| `services/`               | `@nyuchitech/backend`  |
+| `honey/`                  | `@nyuchitech/ai`       |
+| `mini-apps/` + `web/`     | `@nyuchitech/frontend` |
 
 ### PR Template
 
@@ -477,15 +477,15 @@ All PRs use `.github/PULL_REQUEST_TEMPLATE.md` which includes the Ubuntu Test ch
 
 The landing page at `mukoko.com` is a **Next.js 15** app (NOT Preact — React 19 is used here only).
 
-| Component          | Technology                                          |
-| ------------------ | --------------------------------------------------- |
-| Framework          | Next.js 15, React 19                                |
-| CMS                | Sanity (next-sanity v9, Portable Text)              |
-| 3D Visuals         | Three.js (honeycomb background)                     |
-| UI Components      | Radix UI primitives                                 |
-| Styling            | Tailwind CSS 4                                      |
-| Testing            | Vitest                                              |
-| Deployment         | Vercel (`vercel.json`)                              |
+| Component     | Technology                             |
+| ------------- | -------------------------------------- |
+| Framework     | Next.js 15, React 19                   |
+| CMS           | Sanity (next-sanity v9, Portable Text) |
+| 3D Visuals    | Three.js (honeycomb background)        |
+| UI Components | Radix UI primitives                    |
+| Styling       | Tailwind CSS 4                         |
+| Testing       | Vitest                                 |
+| Deployment    | Vercel (`vercel.json`)                 |
 
 **Note:** React is used in `web/` because Next.js requires it. Mini-apps use Preact. Do not confuse the two.
 
@@ -504,19 +504,19 @@ Content schemas for blog: `author`, `category`, `post`. Studio runs at `/studio`
 
 The gateway worker routes all API traffic and verifies Stytch sessions:
 
-| Route Path    | Upstream Service      |
-| ------------- | --------------------- |
-| `/auth/*`     | `id-api`              |
-| `/clips/*`    | External (mukoko-news)|
-| `/events/*`   | External (nhimbe)     |
-| `/pulse/*`    | Pulse API             |
+| Route Path    | Upstream Service          |
+| ------------- | ------------------------- |
+| `/auth/*`     | `id-api`                  |
+| `/clips/*`    | External (mukoko-news)    |
+| `/events/*`   | External (nhimbe)         |
+| `/pulse/*`    | Pulse API                 |
 | `/connect/*`  | External (mukoko-connect) |
 | `/novels/*`   | External (mukoko-novels)  |
 | `/weather/*`  | External (mukoko-weather) |
-| `/wallet/*`   | `wallet-api`          |
-| `/shamwari/*` | `shamwari-api`        |
-| `/miniapps/*` | `miniapp-registry`    |
-| `/twin/*`     | `digital-twin`        |
+| `/wallet/*`   | `wallet-api`              |
+| `/shamwari/*` | `shamwari-api`            |
+| `/miniapps/*` | `miniapp-registry`        |
+| `/twin/*`     | `digital-twin`            |
 
 ---
 
@@ -637,6 +637,7 @@ window.MukokoBridge = {
 ### Shared File Patterns
 
 **Every mini-app** follows the same structure:
+
 ```
 mini-apps/{app}/
 ├── package.json          # @mukoko/{app}, Preact + Vite
@@ -651,6 +652,7 @@ mini-apps/{app}/
 ```
 
 **Every service** follows the same structure:
+
 ```
 services/{service}/
 ├── package.json          # @mukoko/{service}, Hono + wrangler
@@ -734,6 +736,9 @@ Zimbabwe market reality: data is expensive, connectivity is intermittent.
 12. **DO NOT** treat Bundu Family as part of this repo. It is a separate app.
 13. **DO NOT** duplicate backend logic in this monorepo. Each app's backend lives in its standalone repo. The `mini-apps/` directory contains super app frontends only.
 14. **DO NOT** confuse the super app frontend (`mini-apps/`) with the standalone PWA. They are separate codebases sharing the same backend API.
+15. **DO NOT** create page-specific CSS. All pages use the same shared brand primitives from `globals.css` (and ultimately from `@mukoko/ui` registry). No page should have its own parallel styling system. New primitives must be submitted as issues to `nyuchitech/mukoko-registry`.
+16. **DO NOT** set touch targets below 48px. Default touch target is **56px**; minimum is **48px** (only for compact inline form elements). All interactive elements must meet these minimums.
+17. **DO NOT** use light mode on the marketing site. The marketing site (`web/`) is **dark-mode only** — no `prefers-color-scheme` media queries, no light theme.
 
 ---
 
