@@ -197,7 +197,7 @@ export default function ManifestoPage() {
               <span className="mineral-card__icon" aria-hidden="true">🪪</span>
               <p className="mineral-card__title">Mukoko ID</p>
               <p className="mineral-card__body">
-                Your cloud identity. Stores only summarised Your Honey data —
+                Your cloud identity. Stores only summarised Honey data —
                 never raw events. You can read, edit, or delete it at any time.
               </p>
             </div>
@@ -205,7 +205,7 @@ export default function ManifestoPage() {
               <span className="mineral-card__icon" aria-hidden="true">🤖</span>
               <p className="mineral-card__title">shamwari AI</p>
               <p className="mineral-card__body">
-                Reads your Your Honey to give context-aware assistance across
+                Reads Your Honey to give context-aware assistance across
                 all 15 apps. Only what you choose to share.
               </p>
             </div>
@@ -213,7 +213,7 @@ export default function ManifestoPage() {
               <span className="mineral-card__icon" aria-hidden="true">🔐</span>
               <p className="mineral-card__title">Data Sovereignty</p>
               <p className="mineral-card__body">
-                Full transparency. Full editability. Full deletability. Your
+                Full transparency. Full editability. Full deletability.
                 Your Honey is not a black box — it is your possession.
               </p>
             </div>
@@ -392,7 +392,7 @@ export default function ManifestoPage() {
                     "Honey learns on your phone. Summaries sync to the cloud. Never the raw events.",
                 },
                 {
-                  pledge: "Let you see, edit, and delete your Your Honey.",
+                  pledge: "Let you see, edit, and delete Your Honey.",
                   detail:
                     "No hidden profiles. Full transparency. Full control.",
                 },

@@ -2,7 +2,7 @@
 
 **A Digital Twin Social Ecosystem for Africa.**
 
-mukoko is a WeChat-style super app that gives every user a sovereign digital identity — a soulbound token anchored to their birth date — and connects them through six interconnected apps, one AI companion, and one token economy. Built for Africa's realities: mixed device quality, high data costs, intermittent connectivity, and mobile money as the primary payment rail.
+mukoko is a WeChat-style super app that gives every user a sovereign digital identity — a soulbound token anchored to their birth date — and connects them through 15 mini-apps, one AI companion, and one token economy. Built for Africa's realities: mixed device quality, high data costs, intermittent connectivity, and mobile money as the primary payment rail.
 
 Built by [Nyuchi Africa](https://nyuchi.com). Custodied by the Mukoko Foundation (Mauritius).
 
@@ -24,16 +24,23 @@ The platforms that dominate Africa today were not built for Africa. They extract
 
 ## What's in the super app
 
-| App           | Purpose                                         | Standalone Repo  |
-| ------------- | ----------------------------------------------- | ---------------- |
-| **Mukoko ID** | Unified identity, Digital Twin, Your Honey, SSO | `mukoko-auth`    |
-| **Clips**     | Context-rich news feed from trusted sources     | `mukoko-news`    |
-| **Pulse**     | Personalized aggregated feed across all apps    | This monorepo    |
-| **Connect**   | Interest-based Circles (communities)            | `mukoko-connect` |
-| **Novels**    | African author platform, web novels             | `mukoko-novels`  |
-| **Events**    | Cultural gatherings, ticketing                  | `nhimbe`         |
-
-Plus utility mini-apps: Weather, Marketplace (coming), Transport (coming).
+| App               | Purpose                                | Type           |
+| ----------------- | -------------------------------------- | -------------- |
+| **Campfire**      | Messaging + payments (platform anchor) | Core           |
+| **Pulse**         | Personalized aggregated feed           | Core           |
+| **Mukoko News**   | Context-rich news from trusted sources | Core           |
+| **Bytes**         | Short-form video scrolling             | Core           |
+| **Circles**       | Interest-based communities             | Core           |
+| **Nhimbe**        | Cultural gatherings, ticketing         | Core           |
+| **Novels**        | African author platform                | Core           |
+| **BushTrade**     | Peer-to-peer marketplace               | Core           |
+| **Mukoko Lingo**  | Language learning                      | Core           |
+| **Weather**       | Localized weather                      | Utility        |
+| **Transport**     | Transit and ride info                  | Utility        |
+| **Mukoko ID**     | Sovereign identity + SSO               | Infrastructure |
+| **shamwari**      | AI companion                           | Infrastructure |
+| **Your Honey**    | On-device personalization              | Infrastructure |
+| **Mukoko Wallet** | Payments + MUKOKO tokens               | Infrastructure |
 
 **Shamwari** is the AI companion that lives inside the hive — context-aware, powered by Your Honey, and designed to help rather than surveil.
 
@@ -44,8 +51,8 @@ Plus utility mini-apps: Weather, Marketplace (coming), Transport (coming).
 ```
 Flutter shell (native)          WebView mini-apps (Preact)
 ┌─────────────────────┐        ┌─────────────────────────┐
-│ Auth (Stytch)       │        │ Clips, Pulse, Connect   │
-│ Wallet (EcoCash/MXT)│◄──────►│ Novels, Events, Weather │
+│ Auth (Stytch)       │        │ Campfire, Pulse, News   │
+│ Wallet (EcoCash/MXT)│◄──────►│ Circles, Nhimbe, Novels │
 │ Shamwari AI         │ Bridge │ @mukoko/ui components   │
 │ Your Honey (on-dev) │        │ < 150KB gzipped each    │
 │ Notifications       │        │ Standalone PWA capable  │
@@ -81,12 +88,17 @@ See [ARCHITECTURE.md](./ARCHITECTURE.md) sections 6 and 9 for the full specifica
 mukoko/
 ├── app/            # Flutter super app shell (not a pnpm workspace)
 ├── mini-apps/      # Super app frontends (Preact, loaded in WebView)
+│   ├── campfire/   # Messaging + payments (platform anchor)
 │   ├── pulse/      # Aggregated feed (monorepo-native)
-│   ├── clips/      # News UI (backend in mukoko-news)
-│   ├── connect/    # Circles UI (backend in mukoko-connect)
+│   ├── news/       # News UI (backend in mukoko-news)
+│   ├── bytes/      # Short-form video scrolling
+│   ├── circles/    # Communities UI (backend in mukoko-connect)
+│   ├── nhimbe/     # Events UI (backend in nhimbe)
 │   ├── novels/     # Author platform UI (backend in mukoko-novels)
-│   ├── events/     # Events UI (backend in nhimbe)
-│   └── weather/    # Weather UI (backend in mukoko-weather)
+│   ├── bushtrade/  # Peer-to-peer marketplace
+│   ├── lingo/      # Language learning
+│   ├── weather/    # Weather UI (backend in mukoko-weather)
+│   └── transport/  # Transit and ride info
 ├── services/       # Cloudflare Workers (gateway, auth, wallet, AI)
 ├── packages/       # Shared: @mukoko/ui, @mukoko/bridge, @mukoko/types
 ├── honey/          # Your Honey AI service (Python/FastAPI, isolated)
@@ -138,7 +150,7 @@ pnpm turbo run test
 
 ```bash
 pnpm turbo run dev --filter=@mukoko/ui      # Design system
-pnpm turbo run dev --filter=clips           # Clips mini-app
+pnpm turbo run dev --filter=mukoko-news     # News mini-app
 cd services/gateway && pnpm dev             # API gateway (wrangler)
 cd app && flutter run                       # Flutter shell
 cd honey && docker compose up               # Your Honey AI
@@ -183,7 +195,7 @@ See [CLAUDE.md](./CLAUDE.md) for the complete developer guide and [ARCHITECTURE.
 | ------------------------------------ | --------------------------------------------------------------- |
 | [CLAUDE.md](./CLAUDE.md)             | How we build — coding standards, patterns, tooling              |
 | [ARCHITECTURE.md](./ARCHITECTURE.md) | Full technical specification (~50KB)                            |
-| [docs/adr/](./docs/adr/)             | Architecture Decision Records (001-007)                         |
+| [docs/adr/](./docs/adr/)             | Architecture Decision Records (001-009)                         |
 | [docs/guides/](./docs/guides/)       | Developer guides (getting started, creating mini-apps/services) |
 
 ---

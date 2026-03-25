@@ -20,9 +20,9 @@ _Ndiri nekuti tiri — I am because we are_
 
 Mukoko is a Digital Twin Social Ecosystem for Africa and the global African diaspora, delivered as a WeChat-style super app on Android, iOS, and Huawei devices. It is the flagship product of The Bundu Family, built by Nyuchi Africa.
 
-The platform consists of six interconnected apps — Mukoko ID, Clips, Pulse, Connect, Novels, and Events — all powered by "Your Honey," a privacy-first personalization engine that works FOR users, not against them. Your Honey runs on-device AI, meaning user behavior data never leaves the device. This is the core product: personalization that empowers rather than manipulates.
+The platform consists of 15 interconnected mini-apps — including Campfire, Pulse, Mukoko News, Bytes, Circles, Nhimbe, Novels, BushTrade, Mukoko Lingo, and more — all powered by "Your Honey," a privacy-first personalization engine that works FOR users, not against them. Your Honey runs on-device AI, meaning user behavior data never leaves the device. This is the core product: personalization that empowers rather than manipulates.
 
-The application uses a hybrid architecture: a Flutter native shell provides the core platform services (authentication, wallet, Shamwari AI, notifications, device APIs), while the six ecosystem apps run as optimized WebView mini-apps, enabling rapid development and independent deployment. Each app can also operate as a standalone PWA.
+The application uses a hybrid architecture: a Flutter native shell provides the core platform services (authentication, wallet, Shamwari AI, notifications, device APIs), while the 15 ecosystem mini-apps run as optimized WebView mini-apps, enabling rapid development and independent deployment. Each app can also operate as a standalone PWA.
 
 This architecture is adapted for African market realities: mixed device quality, high data costs, intermittent connectivity, and mobile money as the primary payment rail.
 
@@ -81,13 +81,13 @@ Mukoko is the flagship Digital Twin Social Ecosystem. Other Nyuchi products are 
 
 > _"Your Honey. Your Identity. Your Sovereignty."_
 
-Your Honey is the single most important component of Mukoko. It is a personalization engine that learns user preferences on-device and surfaces relevant content across all six ecosystem apps. Unlike exploitative algorithms that optimize for engagement (platform profit), Your Honey optimizes for enrichment (user growth).
+Your Honey is the single most important component of Mukoko. It is a personalization engine that learns user preferences on-device and surfaces relevant content across all 15 mini-apps. Unlike exploitative algorithms that optimize for engagement (platform profit), Your Honey optimizes for enrichment (user growth).
 
 ### 3.1 How Your Honey Works
 
 1. **You Choose Interests Explicitly** — 32 categories with granular keywords (e.g., "African tech startups" within Technology)
-2. **Your Digital Twin Learns On-Device** — As you engage across Clips, Pulse, Connect, Novels, Events, your preferences evolve. All processing stays on YOUR device, never sent to servers.
-3. **Content Surfaces Across All Components** — Clips shows news you care about, Pulse surfaces creators you'll love, Connect suggests matching Circles, Novels recommends stories, Events highlights relevant gatherings.
+2. **Your Digital Twin Learns On-Device** — As you engage across Mukoko News, Pulse, Circles, Novels, Nhimbe, your preferences evolve. All processing stays on YOUR device, never sent to servers.
+3. **Content Surfaces Across All Components** — Mukoko News shows news you care about, Pulse surfaces creators you'll love, Circles suggests matching communities, Novels recommends stories, Nhimbe highlights relevant gatherings.
 4. **Preferences Evolve As You Grow** — Your Digital Twin captures personality evolution. Interests deepen, shift, and new passions emerge naturally.
 5. **Privacy Preserved Always** — On-device AI means no data sent to servers, no surveillance, no selling preferences, no manipulation.
 
@@ -132,22 +132,31 @@ The on-device component runs as a lightweight ML model embedded in the Flutter s
 
 ---
 
-## 4. The Six Ecosystem Apps
+## 4. The 15 Mini-Apps
 
-Mukoko consists of six interconnected apps, all sharing one Digital Twin, one Your Honey engine, one reputation system, and one token economy. Each app is implemented as a WebView mini-app loaded inside the Flutter shell.
+Mukoko consists of 15 interconnected mini-apps, all sharing one Digital Twin, one Your Honey engine, one reputation system, and one token economy. Each app is implemented as a WebView mini-app loaded inside the Flutter shell.
 
-| App       | Domain               | Purpose                                                                    | Migrating From             |
-| --------- | -------------------- | -------------------------------------------------------------------------- | -------------------------- |
-| Mukoko ID | `id.mukoko.com`      | Unified identity, Digital Twin, single sign-on                             | mukoko-id-api (existing)   |
-| Clips     | `clips.mukoko.com`   | Context-rich news from trusted African + global sources                    | Harare Metro / Mukoko News |
-| Pulse     | _(super app only)_   | Personalized aggregated feed — pulls from all apps, powered by Memory File | Monorepo-native            |
-| Connect   | `connect.mukoko.com` | Interest-based Circles (communities), social forum                         | New build                  |
-| Novels    | `novels.mukoko.com`  | African author platform, web novels, long-form stories                     | New build                  |
-| Events    | `events.mukoko.com`  | Cultural gatherings, meetups, ticket purchasing                            | Nhimbe (existing)          |
+| App           | Domain                 | Purpose                                      | Type           |
+| ------------- | ---------------------- | -------------------------------------------- | -------------- |
+| Campfire      | `campfire.mukoko.com`  | Messaging + payments (platform anchor)       | Core           |
+| Pulse         | _(super app only)_     | Personalized aggregated feed across all apps | Core           |
+| Mukoko News   | `news.mukoko.com`      | Context-rich news from trusted sources       | Core           |
+| Bytes         | `bytes.mukoko.com`     | Short-form video scrolling                   | Core           |
+| Circles       | `circles.mukoko.com`   | Interest-based communities                   | Core           |
+| Nhimbe        | `nhimbe.mukoko.com`    | Cultural gatherings, ticketing               | Core           |
+| Novels        | `novels.mukoko.com`    | African author platform, web novels          | Core           |
+| BushTrade     | `trade.mukoko.com`     | Peer-to-peer marketplace                     | Core           |
+| Mukoko Lingo  | `lingo.mukoko.com`     | Language learning                            | Core           |
+| Weather       | `weather.mukoko.com`   | Localized weather                            | Utility        |
+| Transport     | `transport.mukoko.com` | Transit and ride info                        | Utility        |
+| Mukoko ID     | `id.mukoko.com`        | Sovereign identity, Your Honey, SSO (Stytch) | Infrastructure |
+| shamwari      | —                      | AI companion                                 | Infrastructure |
+| Your Honey    | —                      | On-device personalization engine             | Infrastructure |
+| Mukoko Wallet | `wallet.mukoko.com`    | Payments + MUKOKO tokens                     | Infrastructure |
 
-### 4.1 Clips — Informed Communities
+### 4.1 Mukoko News — Informed Communities
 
-Clips is the evolution of Harare Metro and Mukoko News. It provides context-rich news from trusted African and global sources, filtered by Your Honey to surface topics the user actually cares about. News should inform, not manipulate. Context over clickbait.
+Mukoko News is the evolution of Harare Metro. It provides context-rich news from trusted African and global sources, filtered by Your Honey to surface topics the user actually cares about. News should inform, not manipulate. Context over clickbait.
 
 - Migrates from existing `mukoko-news-backend` Cloudflare Worker
 - RSS aggregation from 17+ Zimbabwean sources (Herald, NewsDay, Chronicle, ZBC, Techzim, The Standard, ZimLive, Business Weekly, etc.)
@@ -157,22 +166,22 @@ Clips is the evolution of Harare Metro and Mukoko News. It provides context-rich
 
 ### 4.2 Pulse — Your Personalized Feed
 
-Pulse is the super app's aggregated feed — a monorepo-native feature that pulls content from ALL ecosystem apps into a single, personalized stream. It exists only within the super app, powered by the **Memory File**.
+Pulse is the super app's aggregated feed — a monorepo-native feature that pulls content from ALL ecosystem apps into a single, personalized stream. It exists only within the super app, powered by **Your Honey**.
 
-- Aggregates content from Clips, Connect, Novels, Events, and creator content
-- Personalized by the **Memory File** (co-created by Nyuchi Honey on-device + Mukoko ID cloud)
+- Aggregates content from Mukoko News, Circles, Novels, Nhimbe, and creator content
+- Personalized by **Your Honey** (on-device learning + Mukoko ID cloud profile)
 - Combines TikTok-style vertical scrolling with Instagram-style discovery
 - MUKOKO token rewards for quality content creation
 - **Not to be confused with Bytes** — Bytes is the TikTok-style scrolling feature in the `mukoko-news` standalone app only
 
-### 4.3 Connect — Interest Communities
+### 4.3 Circles — Interest Communities
 
-Social forum with Circles — interest-based communities. Your Honey suggests Circles matching explicit interests and recommends discussions the user would find valuable. Community forms around shared interests, not algorithmic manipulation.
+Interest-based communities. Your Honey suggests Circles matching explicit interests and recommends discussions the user would find valuable. Community forms around shared interests, not algorithmic manipulation.
 
 - Circle creation and moderation tools
 - Discussion threads with rich media
 - Circle reputation system (moderators earn tokens)
-- Cross-pollination: Clips articles can be discussed in relevant Circles
+- Cross-pollination: Mukoko News articles can be discussed in relevant Circles
 - Leverages existing Durable Objects (ChatRoom, UserSession) for real-time features
 
 ### 4.4 Novels — Author Platform
@@ -185,7 +194,7 @@ Web novel platform supporting African authors. Authors keep 80%+ of revenue. You
 - MUKOKO token payments for premium chapters
 - Genre categorization aligned with Your Honey interest categories
 
-### 4.5 Events — Community Gatherings
+### 4.5 Nhimbe — Community Gatherings
 
 Cultural celebrations, meetups, and community events. Evolves from the existing Nhimbe Events platform. Digital connection should enhance physical community, not replace it. Integrates with Mukoko Wallet for ticket purchasing.
 
@@ -193,14 +202,21 @@ Cultural celebrations, meetups, and community events. Evolves from the existing 
 - Event discovery powered by Your Honey (location + interests)
 - Ticket purchasing via Mukoko Wallet (EcoCash, InnBucks, MUKOKO tokens)
 - Event organizer tools (create, manage, promote)
-- Post-event community: attendees can form Connect Circles
+- Post-event community: attendees can form Circles
 
-### 4.6 Additional Utility Services
+### 4.6 Campfire — Platform Anchor
 
-Beyond the six core ecosystem apps, Mukoko supports utility mini-apps that extend the platform:
+Campfire is the messaging + payments core — the WeChat-style anchor that keeps users in the ecosystem. Messaging, voice notes, group chats, and integrated payments (EcoCash, InnBucks, MUKOKO tokens) in one place.
 
-- **Mukoko Weather** — Local weather forecasts for Zimbabwean cities (utility mini-app, not core ecosystem)
-- **Future:** Marketplace, Transport (kombi/taxi booking), Services (bill pay, airtime, utilities)
+### 4.7 Additional Mini-Apps
+
+Beyond the core apps, Mukoko includes:
+
+- **BushTrade** — Peer-to-peer marketplace for buying/selling within the community
+- **Mukoko Lingo** — Language learning focused on African languages
+- **Weather** — Local weather forecasts for Zimbabwean cities
+- **Transport** — Kombi/taxi routes, transit info, and ride booking
+- **Bytes** — TikTok-style short-form video scrolling (shares backend with Mukoko News)
 
 ---
 
