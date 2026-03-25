@@ -1711,7 +1711,7 @@ a:hover {
 }
 
 .blog-body__p {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 1.2rem;
   font-weight: 400;
   line-height: 1.9;
@@ -1761,7 +1761,7 @@ a:hover {
 }
 
 .blog-body__li {
-  font-family: var(--font-display);
+  font-family: var(--font-body);
   font-size: 1.15rem;
   line-height: 1.8;
   color: var(--color-text);
