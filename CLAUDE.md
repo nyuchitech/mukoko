@@ -72,7 +72,7 @@ Six interconnected apps sharing one identity, one AI engine, one reputation syst
 | **Auth**             | Stytch (sessions, OAuth, MFA, SSO)                                             |
 | **AI**               | Cloudflare AI + TFLite/CoreML on-device + FastAPI backend (honey.nyuchi.com)   |
 | **Storage**          | Cloudflare R2                                                                  |
-| **Blockchain**       | Base (Digital Twin NFT, MUKOKO tokens)                                         |
+| **Blockchain**       | Polygon PoS (MIT soulbound + MXT ERC-20)                                       |
 | **Web Deployment**   | Vercel (landing page + mini-app PWAs)                                          |
 | **Monorepo**         | Turborepo + pnpm workspaces                                                    |
 
@@ -328,7 +328,9 @@ mukoko/
 │   │   ├── 004-mongodb-atlas-primary.md
 │   │   ├── 005-stytch-auth.md
 │   │   ├── 006-vercel-web-deployment.md
-│   │   └── 007-workers-for-platforms.md
+│   │   ├── 007-workers-for-platforms.md
+│   │   ├── 008-polygon-two-token.md
+│   │   └── 009-foundation-dual-entity.md
 │   ├── guides/                    # Developer guides
 │   │   ├── getting-started.md
 │   │   ├── creating-mini-app.md
@@ -493,6 +495,10 @@ The landing page at `mukoko.com` is a **Next.js 15** app (NOT Preact — React 1
 
 - `/` — Home (hero, app showcase, how it works, privacy, ubuntu philosophy, footer)
 - `/manifesto` — Brand manifesto
+- `/digital-twin` — Digital Twin marketing page (soulbound identity, three-pool system, data sovereignty)
+- `/token` — Token Economics marketing page (MIT + MXT, elastic supply, governance, Foundation)
+- `/blog` — Blog (Sanity CMS + ISR)
+- `/blog/[slug]` — Individual blog posts
 
 ### Sanity Studio
 
@@ -681,7 +687,7 @@ services/{service}/
 
 1. **EcoCash** — Econet API, USSD push / app-to-app (Zimbabwe's dominant payment)
 2. **InnBucks** — Wallet integration (growing Zimbabwe market)
-3. **MUKOKO Tokens** — Base blockchain internal ledger + on-chain
+3. **MUKOKO Tokens** — Polygon PoS: MIT (soulbound identity) + MXT (transferable ERC-20)
 4. **Bank Transfer** — ZimSwitch / RTGS (Phase 2)
 5. **Card Payments** — Visa/Mastercard gateway (Phase 2)
 
@@ -720,6 +726,43 @@ Zimbabwe market reality: data is expensive, connectivity is intermittent.
 
 ---
 
+## TOKEN ECONOMY — TWO-TOKEN ARCHITECTURE
+
+The platform uses two tokens on **Polygon PoS** (Solidity ^0.8.20, OpenZeppelin v5):
+
+**MUKOKO Identity Token (MIT)** — soulbound ERC-721, non-transferable, anchored to verified birth date. Used for governance staking and as value anchor for MXT. Think of it as ancestral land under Ubuntu customary law.
+
+**MUKOKO Exchange Token (MXT)** — standard transferable ERC-20 for all transactions. Floor price derived from MIT three-pool system. Elastic supply: no hard cap, baseline emission 10,000 MXT/user, annual ceiling 15%, burn rate 30% of fees.
+
+**Three-Pool Temporal Value:** `V = 0.60 × Mean(Year) + 0.30 × Mean(Month) + 0.10 × Mean(Day)` — pool means computed via O(1) running aggregates.
+
+**Governance:** Conviction staking with quadratic voting: `Weight = √(MXT staked) × Ubuntu Multiplier × Regional Multiplier`. Four tiers (Constitutional 66%, Strategic 40%, Operational 20%, Community 10%).
+
+**Initial allocation (3B MXT):** Ecosystem Reserve 30%, Community Treasury 20%, Founding Team 25% (4yr/1yr cliff), Operations 10%, Investors 10% (economic only, no governance), Advisors 5%.
+
+**Smart contracts:** PoolRegistry, IdentityToken, ValueOracle, ExchangeToken, EmissionController.
+
+See `ARCHITECTURE.md` sections 6 and 9 for full specification.
+
+---
+
+## FOUNDATION & LEGAL STRUCTURE
+
+**Mukoko Foundation** — Mauritius (Foundations Act 2012, VASP licence under VAITOS Act 2021). Non-profit custodian of protocol, token economics, and Ubuntu charter. Governed by a Council elected by MIT holders.
+
+**Nyuchi Africa (Pvt) Ltd** — Zimbabwe (Companies Act). For-profit operating company that builds and operates the platform. Licensed by the Foundation under a revocable service agreement.
+
+**Founder's Reserved Powers** (legal rights in Foundation charter, NOT token rights):
+
+- Ubuntu Veto — block proposals failing the Ubuntu Test
+- African Sovereignty Mandate — majority-African Council composition
+- Core Protocol Lock — protect MIT soulbound property, birth-date anchoring, three-pool system
+- Emergency Pause — circuit breaker for security incidents
+
+Reserved Powers cannot allocate tokens, direct treasury spending, or benefit the founder financially.
+
+---
+
 ## COMMON MISTAKES TO AVOID
 
 1. **DO NOT** use React for mini-apps. Use Preact (3KB, not 40KB).
@@ -744,29 +787,29 @@ Zimbabwe market reality: data is expensive, connectivity is intermittent.
 
 ## QUICK REFERENCE
 
-| Item              | Value                                   |
-| ----------------- | --------------------------------------- |
-| Primary color     | Tanzanite `#4B0082` / `#B388FF`         |
-| Auth provider     | Stytch                                  |
-| Primary database  | MongoDB Atlas                           |
-| Edge cache        | Cloudflare KV + D1                      |
-| Object storage    | Cloudflare R2                           |
-| AI                | Cloudflare AI + on-device TFLite/CoreML |
-| Web deployment    | Vercel                                  |
-| Worker deployment | Cloudflare Workers + Containers         |
-| Mini-app workers  | Workers for Platforms                   |
-| Framework         | Flutter + Preact WebView mini-apps      |
-| State management  | Riverpod                                |
-| Blockchain        | Base (NFT + tokens)                     |
-| Payments          | EcoCash → InnBucks → MUKOKO tokens      |
-| Monorepo          | Turborepo + pnpm                        |
-| Node              | 22+                                     |
-| Min Android       | API 24 (7.0)                            |
-| Min iOS           | 15.0                                    |
-| Architecture doc  | `ARCHITECTURE.md` (detailed spec)       |
-| ADRs              | `docs/adr/001-007`                      |
-| Dev guides        | `docs/guides/`                          |
-| CI                | GitHub Actions (`ci.yml`)               |
+| Item              | Value                                    |
+| ----------------- | ---------------------------------------- |
+| Primary color     | Tanzanite `#4B0082` / `#B388FF`          |
+| Auth provider     | Stytch                                   |
+| Primary database  | MongoDB Atlas                            |
+| Edge cache        | Cloudflare KV + D1                       |
+| Object storage    | Cloudflare R2                            |
+| AI                | Cloudflare AI + on-device TFLite/CoreML  |
+| Web deployment    | Vercel                                   |
+| Worker deployment | Cloudflare Workers + Containers          |
+| Mini-app workers  | Workers for Platforms                    |
+| Framework         | Flutter + Preact WebView mini-apps       |
+| State management  | Riverpod                                 |
+| Blockchain        | Polygon PoS (MIT soulbound + MXT ERC-20) |
+| Payments          | EcoCash → InnBucks → MUKOKO tokens       |
+| Monorepo          | Turborepo + pnpm                         |
+| Node              | 22+                                      |
+| Min Android       | API 24 (7.0)                             |
+| Min iOS           | 15.0                                     |
+| Architecture doc  | `ARCHITECTURE.md` (detailed spec)        |
+| ADRs              | `docs/adr/001-009`                       |
+| Dev guides        | `docs/guides/`                           |
+| CI                | GitHub Actions (`ci.yml`)                |
 
 ---
 

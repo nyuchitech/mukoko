@@ -57,10 +57,10 @@ Both frontends call the **same backend API** — the standalone repo owns the ba
 | Shared packages         | `packages/`                  | Types, design system, bridge SDK, API client          |
 | API gateway             | `services/gateway/`          | Routing + Stytch session verification                 |
 | Mukoko ID               | `services/id-api/`           | Stytch auth + Memory File storage                     |
-| Wallet                  | `services/wallet-api/`       | Payments + MUKOKO tokens                              |
+| Wallet                  | `services/wallet-api/`       | Payments + MXT tokens (ERC-20 on Polygon)             |
 | Shamwari AI             | `services/shamwari-api/`     | AI companion (reads Memory File)                      |
 | Mini-app registry       | `services/miniapp-registry/` | App manifests + R2 assets                             |
-| Digital Twin            | `services/digital-twin/`     | NFT + reputation                                      |
+| Digital Twin            | `services/digital-twin/`     | Soulbound Identity Token (MIT) on Polygon PoS         |
 
 ## How It Works
 

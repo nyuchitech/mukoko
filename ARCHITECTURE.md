@@ -32,7 +32,7 @@ This architecture is adapted for African market realities: mixed device quality,
 - **Backend:** Cloudflare Workers (existing), MongoDB Atlas, D1, KV, Durable Objects
 - **AI:** Shamwari AI companion + Nuchi Honey personalization engine (honey.nyuchi.com)
 - **Payments:** EcoCash, InnBucks, bank integrations + MUKOKO token economy
-- **Identity:** Mukoko ID with Digital Twin NFT on Base blockchain
+- **Identity:** Mukoko ID with Soulbound Identity Token (MIT) on Polygon PoS
 
 ---
 
@@ -249,16 +249,50 @@ Mukoko ID is the honeycomb that holds the honey. It is the enabling infrastructu
 - **ONE** wallet collecting MUKOKO tokens from all activities
 - **ONE** Your Honey engine that improves across everything
 
-### 6.2 Digital Twin NFT
+### 6.2 Digital Twin — Soulbound Identity Token (MIT)
 
-Each user's Digital Twin is minted as an NFT on the Base blockchain. This is not a gimmick — it represents genuine ownership of digital identity.
+Each user's Digital Twin is anchored by a **MUKOKO Identity Token (MIT)** — a soulbound, non-transferable ERC-721 token on the Polygon PoS blockchain. This is not a collectible NFT — it is a mathematical representation of a person's temporal identity within the ecosystem.
 
-- **Not a username granted by Mukoko** — it is the user's PROPERTY
-- **Includes:** personality evolution, preferences, reputation
-- **Portable:** future use across other African Web3 platforms
-- **Valuable:** reputation and social capital are assets
-- **Permanent:** cannot be taken away by corporations
-- **Deletable:** users can burn their NFT and delete everything (full data sovereignty)
+- **Soulbound:** Cannot be sold, traded, or transferred. The `transferFrom` function is overridden to revert unconditionally.
+- **Birth-date anchored:** Minted with the user's verified date of birth. This date becomes the mathematical anchor for value calculation.
+- **Three-pool membership:** Every MIT simultaneously belongs to a Year Pool (birth year), Month Pool (birth month), and Day Pool (birth day-of-month).
+- **Monotonically increasing value:** Token value grows at exactly one second per second. There is no crash scenario in the protocol.
+- **One per human:** Enforced at the contract level — one MIT per verified identity.
+- **Deletable:** Users can burn their token and delete all associated data (full data sovereignty).
+
+#### The Three-Pool Value System
+
+The MIT's value is the weighted composite of three temporal pools:
+
+```
+V(token, t) = 0.60 × Mean(Year Pool) + 0.30 × Mean(Month Pool) + 0.10 × Mean(Day Pool)
+```
+
+| Pool       | Weight | Contains                                  | Property                              |
+| ---------- | ------ | ----------------------------------------- | ------------------------------------- |
+| Year Pool  | 60%    | Everyone born in the same calendar year   | Largest, most stable, greatest anchor |
+| Month Pool | 30%    | Everyone born in the same month, any year | Bridges generations                   |
+| Day Pool   | 10%    | Everyone born on the same day, any month  | Most personal, most distinctive       |
+
+Pool means are computed in O(1) via running aggregates — no iteration over members, regardless of pool size. This is essential for continental scale (1B+ users).
+
+#### Leap Day Correction
+
+People born on 29 February belong to a pool that accumulates members only once every four years. A normalisation factor `L = 4` scales their day pool contribution to be equivalent to a full-representation pool. Calendar equity is non-negotiable.
+
+#### Smart Contracts (Polygon PoS, Solidity ^0.8.20)
+
+| Contract              | Purpose                                                       |
+| --------------------- | ------------------------------------------------------------- |
+| `MukokoPoolRegistry`  | Running aggregates for Year, Month, Day pools. O(1) lookups.  |
+| `MukokoIdentityToken` | Soulbound ERC-721. Minting, pool assignment, transfer revert. |
+| `MukokoValueOracle`   | Composite value formula with governance-adjustable weights.   |
+| `MukokoExchangeToken` | ERC-20 MXT with floor price mechanism. Elastic supply.        |
+| `EmissionController`  | Governs all MXT minting. Annual ceiling. Baseline emission.   |
+
+**Chain:** Polygon PoS (low gas, EVM-compatible, existing African exchange liquidity).
+**Framework:** OpenZeppelin Contracts v5.
+**KYC:** Africa Talks API (primary, SMS OTP verification), Stytch (secondary, web/desktop users).
 
 ### 6.3 The Memory File
 
@@ -499,36 +533,109 @@ Stytch is the auth provider for the entire ecosystem. NOT Supabase.
 
 ## 9. MUKOKO Token Economy
 
-Quality contributions deserve quality rewards. The token economy creates sustainable value for community participation across all six apps.
+### 9.1 Two-Token Architecture
 
-### 9.1 Earning MUKOKO Tokens
+The system operates with two tokens that have distinct roles but work together as a single economic system.
 
-- **Clips** — Quality comments, sharing news, community journalism contributions
-- **Pulse** — Creating content, trending contributions, curating quality
+**MUKOKO Identity Token (MIT)** — soulbound, non-transferable, anchored to verified birth date. Used for governance staking and as the value anchor for the exchange token. The right analogy is ancestral land under Ubuntu customary law — it represents your permanent stake in the community.
+
+**MUKOKO Exchange Token (MXT)** — standard transferable ERC-20 used for all transactions across the platform. Its floor price is derived from the MIT pool system. This is the currency people spend. Think of it as the money circulating on the land — backed by something real, spendable freely, and always guaranteed a minimum value by the protocol.
+
+**The core economic loop:** More users join → more MITs are minted → pool means grow as the community ages → MXT floor rises → the platform becomes more valuable to everyone already on it. Growth benefits all existing members. This is Ubuntu expressed as token economics.
+
+### 9.2 Elastic Supply Model
+
+There is **no hard supply cap** on MXT. This is the single most important design decision in the token economics.
+
+A fixed supply is the right model for digital gold — a scarce store of value. It is the wrong model for a transaction currency designed to serve a growing continental economy. Africa's GDP is ~$3 trillion today, projected to reach $29 trillion by 2050. At continental scale, a fixed supply combined with a burn mechanism would strangle the platform's own success.
+
+Three parameters govern the MXT supply, all stored in the EmissionController contract and adjustable only through Tier 1 constitutional governance votes:
+
+| Parameter               | Default      | Purpose                                                               |
+| ----------------------- | ------------ | --------------------------------------------------------------------- |
+| Baseline emission rate  | 10,000 MXT   | New MXT minted per verified user. Ties supply growth to user growth.  |
+| Annual emission ceiling | 15% per year | Hard cap on annual supply growth. Cannot double in less than 5 years. |
+| Burn rate               | 30% of fees  | Percentage of platform fees permanently removed from supply.          |
+
+### 9.3 Token Allocation
+
+Initial minted supply: **3 billion MXT**. Governance protection for the founding team comes from Reserved Powers (legal), not token dominance — freeing the allocation to reflect where value actually comes from.
+
+| Allocation                     | %   | Amount      | Governance                            |
+| ------------------------------ | --- | ----------- | ------------------------------------- |
+| Ecosystem Reserve              | 30% | 900,000,000 | Tier 2 vote required for each release |
+| Community Treasury             | 20% | 600,000,000 | MIT holders via conviction staking    |
+| Founding Team                  | 25% | 750,000,000 | 4yr vest / 1yr cliff                  |
+| Operations Reserve             | 10% | 300,000,000 | Operational expenditure               |
+| Investors & Strategic Partners | 10% | 300,000,000 | Economic rights only, no governance   |
+| Advisors                       | 5%  | 150,000,000 | 2yr vest / 3 month cliff              |
+
+**50% goes to the community from day one.** Investors get economic participation — not governance rights.
+
+### 9.4 Conviction Staking Governance
+
+Governance uses conviction staking, not coin-voting. The effective weight formula:
+
+```
+Effective Weight = √(MXT staked) × Ubuntu Multiplier × Regional Multiplier
+```
+
+- **Square root (quadratic voting):** Doubling your stake only increases weight by ~41%. A community of 1,000 people staking 100 MXT each outweighs one person staking 100,000 MXT.
+- **Ubuntu Multiplier (1.0×–2.0×):** Rewards sustained community engagement, derived from on-platform Ubuntu Score.
+- **Regional Multiplier:** Platform-wide votes = 1.0×. Regional votes = 2.0× for affected region. Country-level = 3.0× for affected country.
+
+**Four Governance Tiers:**
+
+| Tier | Scope          | Quorum | Examples                                           |
+| ---- | -------------- | ------ | -------------------------------------------------- |
+| 1    | Constitutional | 66%    | Protocol changes, emission parameters, Charter     |
+| 2    | Strategic      | 40%    | Regional expansion, reserve releases, major policy |
+| 3    | Operational    | 20%    | Feature priorities, content moderation, pricing    |
+| 4    | Community      | 10%    | Circle governance, local content, regional ops     |
+
+**Founder's Reserved Powers:** Embedded in the Mukoko Foundation's Mauritius constitutional documents as legal rights — not token rights. Protects: Ubuntu purpose, African sovereignty mandate, platform control, core token protocol. The community governs operations. The founder protects the soul.
+
+### 9.5 Earning and Spending MXT
+
+**Earning:**
+
+- **Clips** — Quality comments, sharing, community journalism
+- **Pulse** — Creating content, trending contributions, curation
 - **Connect** — Circle moderation, helpful discussions, community building
 - **Novels** — Publishing stories, reader engagement, editorial contributions
 - **Events** — Organizing events, community gathering, cultural celebration
 
-### 9.2 Spending MUKOKO Tokens
+**Spending:**
 
-- Premium features across all apps (enhanced analytics, advanced Circle tools)
-- Novel subscriptions and chapter unlocks
-- Event ticket purchases
-- Peer-to-peer transfers between users
-- Future: marketplace transactions, service payments
+- Event tickets, novel chapters, marketplace transactions
+- Peer-to-peer payments and remittances across African borders
+- Premium features across all apps
+- Enterprise API access (B2B demand)
 
-### 9.3 Creator Economics
+### 9.6 Creator Economics
 
 Creators keep **80%+** of revenue (vs. 30-50% on mainstream platforms):
 
-- Novel authors: 85% of chapter revenue
-- Pulse creators: 80% of tipping revenue
-- Event organizers: 90% of ticket revenue (platform takes 10% for infrastructure)
+- Novel authors: **85%** of chapter revenue
+- Pulse creators: **80%** of tipping revenue
+- Event organizers: **90%** of ticket revenue
 - Circle moderators: reputation + token bonuses
 
-### 9.4 Integration with Mobile Money
+Creator rewards are distributed in MXT from the Ecosystem Reserve — creating income denominated in a currency with a rising floor value.
 
-MUKOKO tokens bridge Web3 and traditional finance. Users can convert between tokens and mobile money (EcoCash, InnBucks) through the Mukoko Wallet, enabling real economic participation.
+### 9.7 Platform Revenue Flows
+
+For each MXT fee collected: **30% burned** (permanent supply reduction), **40% Community Treasury** (governance distribution), **30% Ecosystem Reserve** (creator rewards, developer grants).
+
+### 9.8 Local Fiat Integration
+
+The wallet displays all values in the user's preferred local currency. Off-ramp partnerships with mobile money providers enable conversion without crypto exchange accounts:
+
+- **M-Pesa** — East Africa
+- **MTN MoMo** — West and Central Africa
+- **Airtel Money** — East and Central Africa
+- **EcoCash** — Zimbabwe (primary launch market)
+- **InnBucks** — Zimbabwe (growing market)
 
 ---
 
@@ -538,7 +645,7 @@ MUKOKO tokens bridge Web3 and traditional finance. Users can convert between tok
 | ------------- | -------------------------------------------- | ------------- |
 | EcoCash       | Econet API — USSD push / app-to-app          | v1 — Critical |
 | InnBucks      | InnBucks API — wallet integration            | v1 — Critical |
-| MUKOKO Tokens | Base blockchain — internal ledger + on-chain | v1            |
+| MUKOKO Tokens | Polygon PoS — MIT (soulbound) + MXT (ERC-20) | v1            |
 | Bank Transfer | ZimSwitch / RTGS integration                 | v2            |
 | Card Payments | Visa/Mastercard via payment gateway          | v2            |
 
@@ -735,7 +842,7 @@ All UI uses the Five African Minerals palette. Mukoko Platform: Tanzanite primar
 - EcoCash integration (USSD push + API)
 - InnBucks integration
 - MUKOKO token ledger + earning/spending across apps
-- Digital Twin NFT minting on Base blockchain
+- Soulbound Identity Token (MIT) minting on Polygon PoS
 - QR code scan-to-pay
 - Novels mini-app: author platform, reading experience, chapter payments
 - Beta launch on Google Play (Zimbabwe)
@@ -753,7 +860,64 @@ All UI uses the Five African Minerals palette. Mukoko Platform: Tanzanite primar
 
 ---
 
-## 16. Security & Privacy
+## 16. Mukoko Foundation & Legal Structure
+
+### 16.1 Dual-Entity Architecture
+
+The platform operates through two legally independent entities with distinct roles:
+
+**Mukoko Foundation** — Mauritius, registered under the Foundations Act 2012
+
+- Non-profit custodian of the protocol, token economics, and Ubuntu charter
+- Holds the VASP licence under the Virtual Asset and Initial Token Offering Services Act 2021 (VAITOS)
+- Controls the PoolRegistry, EmissionController, and IdentityToken smart contracts
+- Governed by a Council elected by MIT holders via conviction staking
+- Cannot be acquired, merged, or dissolved without a Tier 1 constitutional vote (66% quorum)
+- Jurisdiction chosen for: common-law legal system, FATF-compliant crypto regulation, tax treaty network, and proximity to African markets
+
+**Nyuchi Africa (Pvt) Ltd** — Zimbabwe, registered under the Companies and Other Business Entities Act
+
+- For-profit operating company that builds and operates the Mukoko platform
+- Employs the engineering, design, and operations teams
+- Holds commercial agreements with payment providers (EcoCash, InnBucks, M-Pesa)
+- Revenue from platform fees, enterprise API access, and premium features
+- Licensed by the Foundation to operate the platform under a revocable service agreement
+
+### 16.2 Founder's Reserved Powers
+
+The founder's governance protection is embedded in the Foundation's constitutional documents as **legal rights** — not token rights. This ensures the platform's soul cannot be voted away by token accumulation.
+
+Reserved Powers (exercisable only by the founder or their appointed successor):
+
+| Power                           | Scope                                                                           | Rationale                                         |
+| ------------------------------- | ------------------------------------------------------------------------------- | ------------------------------------------------- |
+| **Ubuntu Veto**                 | Block any proposal that fails the Ubuntu Test                                   | Prevents platform capture by extractive interests |
+| **African Sovereignty Mandate** | Require majority-African Council composition                                    | Ensures the platform remains African-led          |
+| **Core Protocol Lock**          | Veto changes to MIT soulbound property, birth-date anchoring, three-pool system | Protects the foundational identity architecture   |
+| **Emergency Pause**             | Temporarily halt token operations during security incidents                     | Circuit breaker for existential threats           |
+
+Reserved Powers cannot be used to: allocate tokens, direct treasury spending, override operational governance (Tier 3-4), or benefit the founder financially. They exist solely to protect purpose.
+
+### 16.3 Regulatory Compliance
+
+| Jurisdiction | Regulation                      | Status                                                |
+| ------------ | ------------------------------- | ----------------------------------------------------- |
+| Mauritius    | VAITOS Act 2021 (VASP licence)  | Application in preparation                            |
+| Mauritius    | Foundations Act 2012            | Foundation registered                                 |
+| Zimbabwe     | Exchange Control Regulations    | Compliant — MXT treated as utility token              |
+| EU           | MiCA (Markets in Crypto-Assets) | Monitoring — Mauritius VASP provides equivalence path |
+| FATF         | Travel Rule                     | Built into wallet-to-wallet transfers above threshold |
+
+### 16.4 Intellectual Property
+
+- Mukoko platform IP owned by Nyuchi Africa, licensed to the Foundation
+- Open-source components released under MIT License
+- Brand assets (mukoko, nyuchi, shamwari, bundu wordmarks) trademarked by Nyuchi Africa
+- Smart contract source code published and verified on Polygonscan
+
+---
+
+## 17. Security & Privacy
 
 - **Transport:** All API communication HTTPS with certificate pinning
 - **Token storage:** JWT tokens in platform secure storage (Keychain/Keystore), never in WebView localStorage
@@ -770,7 +934,7 @@ All UI uses the Five African Minerals palette. Mukoko Platform: Tanzanite primar
 
 ---
 
-## 17. The Ubuntu Test
+## 18. The Ubuntu Test
 
 Before any feature, product, or decision launches, it must pass the Ubuntu Test:
 

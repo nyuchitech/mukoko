@@ -27,6 +27,8 @@ const columns = [
   {
     heading: "Resources",
     links: [
+      { label: "Digital Twin", href: "/digital-twin", internal: true },
+      { label: "Token Economics", href: "/token", internal: true },
       { label: "Blog", href: "/blog", internal: true },
       { label: "Brand Kit", href: "https://assets.nyuchi.com" },
       { label: "API Status", href: "https://status.mukoko.com" },
