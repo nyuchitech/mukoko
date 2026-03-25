@@ -1,6 +1,5 @@
 import type { Metadata } from "next";
 import { Header } from "@/components/Header";
-import { HoneycombBackgroundLoader } from "@/components/HoneycombBackgroundLoader";
 import { Footer } from "@/sections/Footer";
 
 export const metadata: Metadata = {
@@ -11,7 +10,6 @@ export const metadata: Metadata = {
 export default function TermsPage() {
   return (
     <>
-      <HoneycombBackgroundLoader />
       <Header />
       <main id="main-content">
         <article className="legal-page">

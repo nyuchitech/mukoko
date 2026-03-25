@@ -990,60 +990,11 @@ a:hover {
   }
 }
 
-/* ─── Manifesto Page ─── */
+/* ─── Content Page Primitives ─── */
+/* Shared patterns for long-form content pages (manifesto, about, etc.) */
 
-.manifesto-page {
-  background: var(--color-bg);
-  color: var(--color-text);
-  min-height: 100vh;
-}
-
-/* Manifesto header */
-.manifesto-header {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 1rem 2rem;
-  background: color-mix(in srgb, var(--color-bg) 85%, transparent);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border-bottom: 1px solid var(--color-border);
-}
-
-.manifesto-back {
-  display: inline-flex;
-  align-items: center;
-  gap: 0.4rem;
-  font-family: var(--font-body);
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: var(--color-primary);
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 0;
-  text-decoration: none;
-  transition: opacity 0.2s;
-}
-
-.manifesto-back:hover {
-  opacity: 0.7;
-}
-
-.manifesto-header-meta {
-  font-family: var(--font-mono);
-  font-size: 0.68rem;
-  letter-spacing: 0.12em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  opacity: 0.55;
-}
-
-/* Cover */
-.manifesto-cover {
+/* Hero cover — full-viewport opening with mineral gradients */
+.hero-cover {
   min-height: 100vh;
   background-color: var(--color-bg);
   background-image:
@@ -1059,13 +1010,13 @@ a:hover {
   overflow: hidden;
 }
 
-.manifesto-cover__inner {
+.hero-cover__inner {
   position: relative;
   z-index: 1;
   max-width: 760px;
 }
 
-.manifesto-cover__eyebrow {
+.hero-cover__eyebrow {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   font-weight: 500;
@@ -1075,7 +1026,7 @@ a:hover {
   margin-bottom: 2.5rem;
 }
 
-.manifesto-cover__wordmark {
+.hero-cover__wordmark {
   font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 600;
@@ -1084,7 +1035,7 @@ a:hover {
   margin-bottom: 1.2rem;
 }
 
-.manifesto-cover__title {
+.hero-cover__title {
   font-family: var(--font-display);
   font-size: clamp(3.2rem, 9vw, 6.5rem);
   font-weight: 700;
@@ -1094,7 +1045,7 @@ a:hover {
   margin-bottom: 0.5rem;
 }
 
-.manifesto-cover__title-em {
+.hero-cover__title em {
   font-style: italic;
   background: linear-gradient(130deg, var(--color-tanzanite) 0%, var(--color-malachite) 100%);
   -webkit-background-clip: text;
@@ -1102,7 +1053,7 @@ a:hover {
   background-clip: text;
 }
 
-.manifesto-cover__tagline {
+.hero-cover__tagline {
   font-family: var(--font-display);
   font-style: italic;
   font-size: clamp(1rem, 2.2vw, 1.35rem);
@@ -1112,7 +1063,7 @@ a:hover {
   font-weight: 400;
 }
 
-.manifesto-cover__statement {
+.hero-cover__statement {
   font-family: var(--font-body);
   font-size: 1rem;
   font-weight: 300;
@@ -1122,13 +1073,13 @@ a:hover {
   margin-bottom: 3rem;
 }
 
-.manifesto-cover__meta {
+.hero-cover__meta {
   display: flex;
   gap: 2.5rem;
   flex-wrap: wrap;
 }
 
-.manifesto-cover__meta-item {
+.hero-cover__meta-item {
   font-family: var(--font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.12em;
@@ -1137,36 +1088,38 @@ a:hover {
   line-height: 2;
 }
 
-.manifesto-cover__meta-item strong {
+.hero-cover__meta-item strong {
   display: block;
   color: var(--color-cover-text-muted);
   font-weight: 500;
 }
 
-/* Content area */
-.manifesto-content {
+@media (max-width: 768px) {
+  .hero-cover {
+    padding: 5rem 1.5rem 6rem;
+  }
+}
+
+/* Content area — centered prose column */
+.content-area {
   max-width: 720px;
   margin: 0 auto;
   padding: 0 2rem 0 4.5rem;
 }
 
 @media (max-width: 768px) {
-  .manifesto-content {
+  .content-area {
     padding: 0 1.5rem;
-  }
-
-  .manifesto-cover {
-    padding: 5rem 1.5rem 6rem;
   }
 }
 
-/* Opening */
-.manifesto-opening {
+/* Content opening — lead-in with large quote */
+.content-opening {
   padding: 7rem 0 4.5rem;
   border-bottom: 1px solid var(--color-border);
 }
 
-.manifesto-opening__ubuntu {
+.content-opening__headline {
   font-family: var(--font-display);
   font-size: clamp(1.8rem, 5vw, 3rem);
   font-weight: 700;
@@ -1177,7 +1130,7 @@ a:hover {
   letter-spacing: -0.01em;
 }
 
-.manifesto-opening__translation {
+.content-opening__subtitle {
   font-family: var(--font-mono);
   font-size: 0.72rem;
   letter-spacing: 0.15em;
@@ -1187,31 +1140,17 @@ a:hover {
   opacity: 0.6;
 }
 
-.manifesto-opening__declaration {
-  font-family: var(--font-display);
-  font-size: 1.15rem;
-  font-weight: 400;
-  line-height: 1.85;
-  color: var(--color-text);
-  margin-bottom: 1.4rem;
-}
-
-.manifesto-opening__declaration strong {
-  font-weight: 700;
-  color: var(--color-foreground);
-}
-
-/* Section */
-.manifesto-section {
+/* Content section — numbered section with title + body */
+.content-section {
   padding: 5rem 0 3.5rem;
   border-bottom: 1px solid var(--color-border);
 }
 
-.manifesto-section:last-child {
+.content-section:last-child {
   border-bottom: none;
 }
 
-.manifesto-section__number {
+.content-section__number {
   font-family: var(--font-mono);
   font-size: 0.68rem;
   font-weight: 400;
@@ -1222,7 +1161,7 @@ a:hover {
   margin-bottom: 1rem;
 }
 
-.manifesto-section__title {
+.content-section__title {
   font-family: var(--font-display);
   font-size: clamp(1.75rem, 4vw, 2.6rem);
   font-weight: 700;
@@ -1232,13 +1171,13 @@ a:hover {
   margin-bottom: 2rem;
 }
 
-.manifesto-section__title em {
+.content-section__title em {
   font-style: italic;
   color: var(--color-tanzanite);
 }
 
-/* Body text */
-.manifesto-body-large {
+/* Body text — lead paragraph and body */
+.body-large {
   font-family: var(--font-display);
   font-size: 1.12rem;
   font-weight: 400;
@@ -1247,12 +1186,12 @@ a:hover {
   margin-bottom: 1.6rem;
 }
 
-.manifesto-body-large strong {
+.body-large strong {
   font-weight: 700;
   color: var(--color-foreground);
 }
 
-.manifesto-body {
+.body-text {
   font-family: var(--font-body);
   font-size: 0.97rem;
   font-weight: 400;
@@ -1261,20 +1200,21 @@ a:hover {
   margin-bottom: 1.2rem;
 }
 
-.manifesto-body strong {
+.body-text strong {
   color: var(--color-foreground);
   font-weight: 600;
 }
 
-.manifesto-shona {
+/* Inline accent text */
+.text-accent {
   font-family: var(--font-display);
   font-style: italic;
   color: var(--color-tanzanite);
   font-weight: 700;
 }
 
-/* Pull quote */
-.manifesto-pull-quote {
+/* Pull quote — blockquote with mineral left border */
+.pull-quote {
   margin: 3rem 0;
   padding: 2rem 2rem 2rem 2.5rem;
   background: color-mix(in srgb, var(--color-tanzanite) 8%, transparent);
@@ -1283,12 +1223,7 @@ a:hover {
   position: relative;
 }
 
-.manifesto-pull-quote--green {
-  background: color-mix(in srgb, var(--color-malachite) 8%, transparent);
-  border-left-color: var(--color-malachite);
-}
-
-.manifesto-pull-quote p {
+.pull-quote p {
   font-family: var(--font-display);
   font-size: 1.15rem;
   font-style: italic;
@@ -1297,11 +1232,7 @@ a:hover {
   margin-bottom: 0.7rem;
 }
 
-.manifesto-pull-quote--green p {
-  color: var(--color-malachite);
-}
-
-.manifesto-pull-quote cite {
+.pull-quote cite {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   letter-spacing: 0.12em;
@@ -1311,8 +1242,8 @@ a:hover {
   opacity: 0.6;
 }
 
-/* App map */
-.manifesto-app-map {
+/* Code tree — monospace display block for architecture diagrams */
+.code-tree {
   background: var(--color-bg-alt);
   border-radius: var(--radius-card);
   padding: 2rem;
@@ -1324,26 +1255,13 @@ a:hover {
   overflow-x: auto;
 }
 
-.manifesto-app-map span {
-  display: block;
-}
+.code-tree span { display: block; }
+.code-tree .ct-name { color: var(--color-cover-code-name); font-weight: 500; }
+.code-tree .ct-anchor { color: var(--color-gold); font-weight: 700; }
+.code-tree .ct-infra { color: var(--color-malachite); }
 
-.manifesto-app-map .am-name {
-  color: var(--color-cover-code-name);
-  font-weight: 500;
-}
-
-.manifesto-app-map .am-anchor {
-  color: var(--color-gold);
-  font-weight: 700;
-}
-
-.manifesto-app-map .am-infra {
-  color: var(--color-malachite);
-}
-
-/* Pillar grid */
-.manifesto-pillar-grid {
+/* Card grid — 2-column grid of feature cards */
+.card-grid {
   display: grid;
   grid-template-columns: 1fr 1fr;
   gap: 1.25rem;
@@ -1351,43 +1269,49 @@ a:hover {
 }
 
 @media (max-width: 580px) {
-  .manifesto-pillar-grid {
+  .card-grid {
     grid-template-columns: 1fr;
   }
 }
 
-.manifesto-pillar-card {
+/* Mineral card — card themed with mineral color */
+.mineral-card {
   padding: 1.75rem;
   border-radius: var(--radius-card);
 }
 
-.manifesto-pillar-card--cobalt {
-  background: color-mix(in srgb, var(--color-cobalt) 8%, transparent);
+.mineral-card--cobalt {
+  background: var(--color-cobalt-container);
   border: 1px solid color-mix(in srgb, var(--color-cobalt) 18%, transparent);
 }
 
-.manifesto-pillar-card--tanzanite {
-  background: color-mix(in srgb, var(--color-tanzanite) 8%, transparent);
+.mineral-card--tanzanite {
+  background: var(--color-tanzanite-container);
   border: 1px solid color-mix(in srgb, var(--color-tanzanite) 18%, transparent);
 }
 
-.manifesto-pillar-card--malachite {
-  background: color-mix(in srgb, var(--color-malachite) 8%, transparent);
+.mineral-card--malachite {
+  background: var(--color-malachite-container);
   border: 1px solid color-mix(in srgb, var(--color-malachite) 18%, transparent);
 }
 
-.manifesto-pillar-card--terracotta {
-  background: color-mix(in srgb, var(--color-terracotta) 8%, transparent);
+.mineral-card--terracotta {
+  background: var(--color-terracotta-container);
   border: 1px solid color-mix(in srgb, var(--color-terracotta) 18%, transparent);
 }
 
-.manifesto-pillar-card__icon {
+.mineral-card--gold {
+  background: var(--color-gold-container);
+  border: 1px solid color-mix(in srgb, var(--color-gold) 18%, transparent);
+}
+
+.mineral-card__icon {
   font-size: 1.4rem;
   display: block;
   margin-bottom: 0.6rem;
 }
 
-.manifesto-pillar-card__title {
+.mineral-card__title {
   font-family: var(--font-body);
   font-size: 0.8rem;
   font-weight: 800;
@@ -1396,69 +1320,63 @@ a:hover {
   margin-bottom: 0.5rem;
 }
 
-.manifesto-pillar-card--cobalt .manifesto-pillar-card__title { color: var(--color-cobalt); }
-.manifesto-pillar-card--tanzanite .manifesto-pillar-card__title { color: var(--color-tanzanite); }
-.manifesto-pillar-card--malachite .manifesto-pillar-card__title { color: var(--color-malachite); }
-.manifesto-pillar-card--terracotta .manifesto-pillar-card__title { color: var(--color-terracotta); }
+.mineral-card--cobalt .mineral-card__title { color: var(--color-cobalt); }
+.mineral-card--tanzanite .mineral-card__title { color: var(--color-tanzanite); }
+.mineral-card--malachite .mineral-card__title { color: var(--color-malachite); }
+.mineral-card--terracotta .mineral-card__title { color: var(--color-terracotta); }
+.mineral-card--gold .mineral-card__title { color: var(--color-gold); }
 
-.manifesto-pillar-card__body {
+.mineral-card__body {
   font-family: var(--font-body);
   font-size: 0.87rem;
   line-height: 1.7;
   color: var(--color-text-muted);
 }
 
-/* Ubuntu questions */
-.manifesto-ubuntu-list {
+/* Feature blocks — stacked blocks with mineral left borders */
+.feature-blocks {
   display: flex;
   flex-direction: column;
-  gap: 0;
+  gap: 1.25rem;
   margin: 2rem 0;
 }
 
-.manifesto-ubuntu-q {
-  display: flex;
-  gap: 1.2rem;
-  align-items: flex-start;
-  padding: 1.2rem 0;
-  border-bottom: 1px solid var(--color-border);
+.feature-block {
+  padding: 1.6rem 1.75rem;
+  border-radius: var(--radius-button);
+  border-left: 4px solid transparent;
+  background: var(--color-bg-alt);
 }
 
-.manifesto-ubuntu-q:last-child {
-  border-bottom: none;
-}
+.feature-block:nth-child(1) { border-left-color: var(--color-tanzanite); }
+.feature-block:nth-child(2) { border-left-color: var(--color-cobalt); }
+.feature-block:nth-child(3) { border-left-color: var(--color-malachite); }
+.feature-block:nth-child(4) { border-left-color: var(--color-accent); }
 
-.manifesto-ubuntu-q__num {
+.feature-block__label {
   font-family: var(--font-mono);
-  font-size: 0.68rem;
-  color: var(--color-tanzanite);
-  opacity: 0.45;
-  min-width: 1.8rem;
-  padding-top: 0.2rem;
+  font-size: 0.65rem;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  opacity: 0.55;
+  margin-bottom: 0.5rem;
 }
 
-.manifesto-ubuntu-q__text {
-  font-family: var(--font-display);
-  font-size: 1.05rem;
-  line-height: 1.6;
+.feature-block__text {
+  font-family: var(--font-body);
+  font-size: 0.92rem;
+  line-height: 1.75;
   color: var(--color-text);
 }
 
-.manifesto-ubuntu-q__text strong {
-  color: var(--color-tanzanite);
-  font-weight: 700;
-  font-style: italic;
+.feature-block__text strong {
+  color: var(--color-foreground);
+  font-weight: 600;
 }
 
-.manifesto-ubuntu-q__sub {
-  font-family: var(--font-body);
-  font-size: 0.82rem;
-  color: var(--color-text-muted);
-  margin-top: 0.2rem;
-}
-
-/* Pledge list */
-.manifesto-pledge-list {
+/* Pledge list — numbered items with background */
+.pledge-list {
   list-style: none;
   margin: 2rem 0;
   display: flex;
@@ -1466,7 +1384,7 @@ a:hover {
   gap: 0.75rem;
 }
 
-.manifesto-pledge-list li {
+.pledge-list li {
   display: flex;
   gap: 1.2rem;
   align-items: flex-start;
@@ -1476,8 +1394,7 @@ a:hover {
   border: 1px solid var(--color-border);
 }
 
-
-.manifesto-pledge-num {
+.pledge-list__num {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   color: var(--color-tanzanite);
@@ -1486,27 +1403,27 @@ a:hover {
   padding-top: 0.15rem;
 }
 
-.manifesto-pledge-text {
+.pledge-list__text {
   font-family: var(--font-body);
   font-size: 0.92rem;
   line-height: 1.7;
   color: var(--color-text);
 }
 
-.manifesto-pledge-text strong {
+.pledge-list__text strong {
   font-weight: 700;
   color: var(--color-foreground);
 }
 
-/* Never list */
-.manifesto-never-list {
+/* Cross list — items with × markers */
+.cross-list {
   margin: 1.5rem 0;
   display: flex;
   flex-direction: column;
   gap: 0.3rem;
 }
 
-.manifesto-never-item {
+.cross-list__item {
   font-family: var(--font-body);
   font-size: 0.93rem;
   line-height: 1.6;
@@ -1516,7 +1433,7 @@ a:hover {
   gap: 1rem;
 }
 
-.manifesto-never-item::before {
+.cross-list__item::before {
   content: '✕';
   font-family: var(--font-mono);
   font-size: 0.62rem;
@@ -1525,8 +1442,8 @@ a:hover {
   min-width: 1rem;
 }
 
-/* Divider */
-.manifesto-divider {
+/* Prose divider — centered text with lines */
+.prose-divider {
   display: flex;
   align-items: center;
   gap: 1.2rem;
@@ -1539,65 +1456,23 @@ a:hover {
   opacity: 0.35;
 }
 
-.manifesto-divider::before,
-.manifesto-divider::after {
+.prose-divider::before,
+.prose-divider::after {
   content: '';
   flex: 1;
   height: 1px;
   background: currentColor;
 }
 
-/* Vision blocks */
-.manifesto-vision-blocks {
-  display: flex;
-  flex-direction: column;
-  gap: 1.25rem;
-  margin: 2rem 0;
-}
-
-.manifesto-vision-block {
-  padding: 1.6rem 1.75rem;
-  border-radius: var(--radius-button);
-  border-left: 4px solid transparent;
-  background: var(--color-bg-alt);
-}
-
-.manifesto-vision-block:nth-child(1) { border-left-color: var(--color-tanzanite); }
-.manifesto-vision-block:nth-child(2) { border-left-color: var(--color-cobalt); }
-.manifesto-vision-block:nth-child(3) { border-left-color: var(--color-malachite); }
-.manifesto-vision-block:nth-child(4) { border-left-color: var(--color-accent); }
-
-.manifesto-vision-block__label {
-  font-family: var(--font-mono);
-  font-size: 0.65rem;
-  letter-spacing: 0.15em;
-  text-transform: uppercase;
-  color: var(--color-text-muted);
-  opacity: 0.55;
-  margin-bottom: 0.5rem;
-}
-
-.manifesto-vision-block__text {
-  font-family: var(--font-body);
-  font-size: 0.92rem;
-  line-height: 1.75;
-  color: var(--color-text);
-}
-
-.manifesto-vision-block__text strong {
-  color: var(--color-foreground);
-  font-weight: 600;
-}
-
-/* Stack (prose poetry) */
-.manifesto-stack {
+/* Prose stack — bordered prose poetry lines */
+.prose-stack {
   padding: 1.5rem 0 1rem;
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
 }
 
-.manifesto-stack-line {
+.prose-stack__line {
   font-family: var(--font-display);
   font-size: 1.05rem;
   font-style: italic;
@@ -1607,7 +1482,7 @@ a:hover {
   border-left: 2px solid color-mix(in srgb, var(--color-tanzanite) 20%, transparent);
 }
 
-.manifesto-stack-line--strong {
+.prose-stack__line--strong {
   font-weight: 700;
   font-style: normal;
   color: var(--color-foreground);
@@ -1615,13 +1490,13 @@ a:hover {
   font-size: 1rem;
 }
 
-/* Closing */
-.manifesto-closing {
+/* Content closing — centered ending section */
+.content-closing {
   padding: 6rem 0;
   text-align: center;
 }
 
-.manifesto-closing__ubuntu {
+.content-closing__headline {
   font-family: var(--font-display);
   font-size: clamp(1.7rem, 5vw, 3rem);
   font-weight: 700;
@@ -1631,7 +1506,7 @@ a:hover {
   line-height: 1.2;
 }
 
-.manifesto-closing__sub {
+.content-closing__sub {
   font-family: var(--font-body);
   font-size: 0.95rem;
   font-weight: 300;
@@ -1639,7 +1514,7 @@ a:hover {
   margin-bottom: 0.75rem;
 }
 
-.manifesto-closing__tagline {
+.content-closing__tagline {
   font-family: var(--font-display);
   font-size: 1.05rem;
   font-style: italic;
@@ -1648,7 +1523,7 @@ a:hover {
   opacity: 0.75;
 }
 
-.manifesto-closing__byline {
+.content-closing__byline {
   font-family: var(--font-mono);
   font-size: 0.68rem;
   letter-spacing: 0.15em;
@@ -1658,14 +1533,35 @@ a:hover {
   line-height: 2.2;
 }
 
-.manifesto-honeycomb {
+.content-closing__icon {
   display: flex;
   justify-content: center;
   margin: 1.5rem 0 2.5rem;
   opacity: 0.12;
 }
 
-.manifesto-honeycomb svg {
+.content-closing__icon svg {
   width: 90px;
   height: 65px;
+}
+
+/* Back link */
+.back-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-family: var(--font-body);
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-primary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0;
+  text-decoration: none;
+  transition: opacity 0.2s;
+}
+
+.back-link:hover {
+  opacity: 0.7;
 }
