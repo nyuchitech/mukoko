@@ -291,7 +291,8 @@ mukoko/
 │   ├── wallet-api/                # Payments + MUKOKO tokens
 │   ├── shamwari-api/              # AI companion (Cloudflare AI)
 │   ├── miniapp-registry/          # Mini-app manifest + R2 assets
-│   └── digital-twin/              # NFT + reputation
+│   ├── digital-twin/              # NFT + reputation
+│   └── _template/                 # Starter for new workers (Hono)
 │   # NOTE: App-specific backends (clips, pulse, events, connect, novels, weather)
 │   #        live in their standalone repos, NOT here.
 │
@@ -308,13 +309,85 @@ mukoko/
 │   ├── bridge-sdk/                # @mukoko/bridge (TypeScript)
 │   └── api-client/                # @mukoko/api
 │
-├── web/                           # Landing page (deployed to Vercel)
+├── web/                           # Landing page (Next.js 15 + Sanity CMS, deployed to Vercel)
+│   ├── app/                       # Next.js app router (layout, pages)
+│   ├── src/
+│   │   ├── components/            # Header, HoneycombBackground, WaitlistForm
+│   │   ├── sections/              # Hero, AppShowcase, Footer, HowItWorks, Privacy, Ubuntu
+│   │   └── lib/                   # Sanity client, utilities
+│   ├── studio/                    # Sanity Studio (blog CMS)
+│   │   └── schemaTypes/           # author, category, post schemas
+│   ├── public/                    # Static assets
+│   └── vercel.json                # Vercel deployment config
+│
 ├── docs/                          # Architecture docs, guides, ADRs
+│   ├── adr/                       # Architecture Decision Records
+│   │   ├── 001-monorepo-turborepo.md
+│   │   ├── 002-preact-over-react.md
+│   │   ├── 003-hono-for-new-workers.md
+│   │   ├── 004-mongodb-atlas-primary.md
+│   │   ├── 005-stytch-auth.md
+│   │   ├── 006-vercel-web-deployment.md
+│   │   └── 007-workers-for-platforms.md
+│   ├── guides/                    # Developer guides
+│   │   ├── getting-started.md
+│   │   ├── creating-mini-app.md
+│   │   ├── creating-service.md
+│   │   ├── connected-repos.md
+│   │   ├── mongodb-atlas.md
+│   │   └── stytch-integration.md
+│   └── api/                       # API reference
+│
 ├── .github/                       # CI/CD workflows
+├── ARCHITECTURE.md                # Detailed technical specification (45KB)
 ├── turbo.json                     # Monorepo config
 ├── pnpm-workspace.yaml            # Workspace definition
 └── CLAUDE.md                      # THIS FILE
 ```
+
+---
+
+## DEVELOPER ENVIRONMENT & TOOLING
+
+### Prerequisites
+
+| Tool    | Version  | Notes                           |
+| ------- | -------- | ------------------------------- |
+| Node.js | 22+      | Pinned in `.nvmrc`              |
+| pnpm    | 9.15.4+  | Pinned in `package.json`        |
+| Flutter | Latest   | For `app/` development          |
+| Python  | 3.12+    | For `honey/` only               |
+| Docker  | Latest   | For `honey/` local dev          |
+
+### Root Configuration Files
+
+| File               | Purpose                                                          |
+| ------------------ | ---------------------------------------------------------------- |
+| `turbo.json`       | Turborepo task graph (build, dev, lint, typecheck, test, deploy) |
+| `pnpm-workspace.yaml` | Workspace: `packages/*`, `services/*`, `mini-apps/*`, `web`  |
+| `eslint.config.mjs`   | Root ESLint config — uses `@mukoko/eslint-config`             |
+| `.prettierrc`      | Prettier: semicolons, 2-space indent, 100 char width, single quotes |
+| `.nvmrc`           | Locks Node to v22                                                |
+| `.npmrc`           | Auto-install peers, no strict peer deps                          |
+
+### Git Hooks (Husky + lint-staged)
+
+Pre-commit hook runs `lint-staged` automatically on staged files. Configured via `husky` (v9.1.7) and `lint-staged` (v16.4.0) in `package.json`.
+
+### Key Dependency Versions
+
+| Package      | Version | Used In                |
+| ------------ | ------- | ---------------------- |
+| turbo        | 2.4.0   | Root monorepo          |
+| typescript   | 5.7.0   | All TS packages        |
+| preact       | 10.25.0 | Mini-apps              |
+| vite         | 6.0     | Mini-apps              |
+| hono         | 4.12.8  | New workers/services   |
+| wrangler     | 4.0.0   | Worker deployment      |
+| next         | 15      | `web/` landing page    |
+| react        | 19      | `web/` only (NOT mini-apps) |
+| eslint       | 10.0.0  | Linting                |
+| prettier     | 3.4.0   | Formatting             |
 
 ---
 
@@ -348,6 +421,15 @@ pnpm turbo run test --filter=@mukoko/bridge
 cd services/gateway && pnpm dev          # wrangler dev
 cd services/gateway && pnpm deploy       # wrangler deploy
 
+# Landing page (web/)
+cd web && pnpm dev                       # Next.js dev server
+cd web && pnpm build                     # Next.js production build
+cd web && pnpm test                      # Vitest
+
+# Sanity Studio (web/studio/)
+cd web && pnpm sanity dev                # Sanity Studio dev
+cd web && pnpm sanity deploy             # Deploy Sanity Studio
+
 # Flutter
 cd app && flutter pub get
 cd app && flutter analyze
@@ -359,6 +441,82 @@ cd honey && pip install -r requirements.txt
 cd honey && python -m pytest tests/
 cd honey && docker compose up
 ```
+
+---
+
+## CI/CD & CODE QUALITY
+
+### GitHub Actions (`.github/workflows/ci.yml`)
+
+Triggers on push to `main` and all PRs to `main`. Runs:
+
+```
+pnpm turbo run build typecheck lint test
+```
+
+Uses pnpm v4 action, Node 22, Turborepo cache. Concurrency group cancels in-progress runs for the same ref.
+
+### Code Ownership (`.github/CODEOWNERS`)
+
+| Path                    | Team                  |
+| ----------------------- | --------------------- |
+| Root config             | `@nyuchitech/core`    |
+| `app/`                  | `@nyuchitech/mobile`  |
+| `packages/design-system/` | `@nyuchitech/design` |
+| `services/`             | `@nyuchitech/backend` |
+| `honey/`                | `@nyuchitech/ai`      |
+| `mini-apps/` + `web/`   | `@nyuchitech/frontend`|
+
+### PR Template
+
+All PRs use `.github/PULL_REQUEST_TEMPLATE.md` which includes the Ubuntu Test checklist.
+
+---
+
+## LANDING PAGE — WEB (`web/`)
+
+The landing page at `mukoko.com` is a **Next.js 15** app (NOT Preact — React 19 is used here only).
+
+| Component          | Technology                                          |
+| ------------------ | --------------------------------------------------- |
+| Framework          | Next.js 15, React 19                                |
+| CMS                | Sanity (next-sanity v9, Portable Text)              |
+| 3D Visuals         | Three.js (honeycomb background)                     |
+| UI Components      | Radix UI primitives                                 |
+| Styling            | Tailwind CSS 4                                      |
+| Testing            | Vitest                                              |
+| Deployment         | Vercel (`vercel.json`)                              |
+
+**Note:** React is used in `web/` because Next.js requires it. Mini-apps use Preact. Do not confuse the two.
+
+### Pages
+
+- `/` — Home (hero, app showcase, how it works, privacy, ubuntu philosophy, footer)
+- `/manifesto` — Brand manifesto
+
+### Sanity Studio
+
+Content schemas for blog: `author`, `category`, `post`. Studio runs at `/studio` route or standalone via `pnpm sanity dev`.
+
+---
+
+## API GATEWAY ROUTING (`services/gateway/`)
+
+The gateway worker routes all API traffic and verifies Stytch sessions:
+
+| Route Path    | Upstream Service      |
+| ------------- | --------------------- |
+| `/auth/*`     | `id-api`              |
+| `/clips/*`    | External (mukoko-news)|
+| `/events/*`   | External (nhimbe)     |
+| `/pulse/*`    | Pulse API             |
+| `/connect/*`  | External (mukoko-connect) |
+| `/novels/*`   | External (mukoko-novels)  |
+| `/weather/*`  | External (mukoko-weather) |
+| `/wallet/*`   | `wallet-api`          |
+| `/shamwari/*` | `shamwari-api`        |
+| `/miniapps/*` | `miniapp-registry`    |
+| `/twin/*`     | `digital-twin`        |
 
 ---
 
@@ -476,6 +634,38 @@ window.MukokoBridge = {
 - Rate limiting: per-user via KV
 - Environment variables for ALL secrets
 
+### Shared File Patterns
+
+**Every mini-app** follows the same structure:
+```
+mini-apps/{app}/
+├── package.json          # @mukoko/{app}, Preact + Vite
+├── index.html            # Entry point
+├── src/
+│   ├── index.tsx         # Mount point
+│   └── app.tsx           # Root component
+├── public/manifest.json  # PWA manifest
+├── vite.config.ts
+├── vitest.config.ts
+└── tsconfig.json
+```
+
+**Every service** follows the same structure:
+```
+services/{service}/
+├── package.json          # @mukoko/{service}, Hono + wrangler
+├── src/
+│   ├── index.ts          # Hono app entry
+│   ├── middleware/
+│   │   ├── auth.ts       # Stytch session verification
+│   │   └── index.ts
+│   └── lib/
+│       └── mongodb.ts    # MongoDB Atlas connection
+├── wrangler.jsonc        # Cloudflare config (bindings, env)
+├── vitest.config.ts
+└── tsconfig.json
+```
+
 ### General
 
 - TypeScript strict mode everywhere
@@ -568,6 +758,10 @@ Zimbabwe market reality: data is expensive, connectivity is intermittent.
 | Node              | 22+                                     |
 | Min Android       | API 24 (7.0)                            |
 | Min iOS           | 15.0                                    |
+| Architecture doc  | `ARCHITECTURE.md` (detailed spec)       |
+| ADRs              | `docs/adr/001-007`                      |
+| Dev guides        | `docs/guides/`                          |
+| CI                | GitHub Actions (`ci.yml`)               |
 
 ---
 
