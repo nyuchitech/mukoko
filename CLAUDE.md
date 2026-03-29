@@ -36,22 +36,31 @@ BUNDU (Container)     — The wilderness. Parent brand. SEPARATE APP.
 
 ## WHAT MUKOKO IS
 
-Six interconnected apps sharing one identity, one AI engine, one reputation system, and one token economy:
+15 mini-apps sharing one identity, one AI engine, one reputation system, and one token economy:
 
-| App           | Domain               | Purpose                                                   | Standalone Repo        |
-| ------------- | -------------------- | --------------------------------------------------------- | ---------------------- |
-| **Mukoko ID** | `id.mukoko.com`      | Unified identity, Digital Twin, Memory File, SSO (Stytch) | `mukoko-auth`          |
-| **Clips**     | `clips.mukoko.com`   | Context-rich news feed from trusted sources               | `mukoko-news`          |
-| **Pulse**     | `pulse.mukoko.com`   | Personalized super app feed — aggregates all apps         | **This monorepo**      |
-| **Connect**   | `connect.mukoko.com` | Interest-based Circles (communities)                      | `mukoko-connect` (new) |
-| **Novels**    | `novels.mukoko.com`  | African author platform, web novels                       | `mukoko-novels` (new)  |
-| **Events**    | `events.mukoko.com`  | Cultural gatherings, ticketing                            | `nhimbe`               |
+| App               | Domain                 | Purpose                                      | Type           | Standalone Repo    |
+| ----------------- | ---------------------- | -------------------------------------------- | -------------- | ------------------ |
+| **Campfire**      | `campfire.mukoko.com`  | Messaging + payments (platform anchor)       | Core           | `mukoko-campfire`  |
+| **Pulse**         | `pulse.mukoko.com`     | Personalized aggregated feed across all apps | Core           | **This monorepo**  |
+| **Mukoko News**   | `news.mukoko.com`      | Context-rich news from trusted sources       | Core           | `mukoko-news`      |
+| **Bytes**         | `bytes.mukoko.com`     | Short-form video scrolling                   | Core           | `mukoko-news`      |
+| **Circles**       | `circles.mukoko.com`   | Interest-based communities                   | Core           | `mukoko-connect`   |
+| **Nhimbe**        | `nhimbe.mukoko.com`    | Cultural gatherings, ticketing               | Core           | `nhimbe`           |
+| **Novels**        | `novels.mukoko.com`    | African author platform, web novels          | Core           | `mukoko-novels`    |
+| **BushTrade**     | `trade.mukoko.com`     | Peer-to-peer marketplace                     | Core           | `mukoko-bushtrade` |
+| **Mukoko Lingo**  | `lingo.mukoko.com`     | Language learning                            | Core           | `mukoko-lingo`     |
+| **Weather**       | `weather.mukoko.com`   | Localized weather                            | Utility        | `mukoko-weather`   |
+| **Transport**     | `transport.mukoko.com` | Transit and ride info                        | Utility        | `mukoko-transport` |
+| **Mukoko ID**     | `id.mukoko.com`        | Sovereign identity, Your Honey, SSO (Stytch) | Infrastructure | `mukoko-auth`      |
+| **shamwari**      | —                      | AI companion                                 | Infrastructure | —                  |
+| **Your Honey**    | —                      | On-device personalization engine             | Infrastructure | —                  |
+| **Mukoko Wallet** | `wallet.mukoko.com`    | Payments + MUKOKO tokens                     | Infrastructure | —                  |
 
-**Pulse** is the super app's unified feed. It aggregates content from Clips, Events, Connect, Novels, and more — personalized by the **Memory File** (see below). Pulse lives in this monorepo, not in a standalone repo.
+**Campfire** is the platform anchor — messaging + payments in one place. Think WeChat's core chat experience.
 
-**Clips** (`mukoko-news` repo) is the news/articles app. It also includes **Bytes** (TikTok-style short-form scrolling) in its standalone version. Bytes stays in the standalone app; Pulse is the super app's own aggregated feed.
+**Pulse** is the super app's unified feed. It aggregates content from Mukoko News, Nhimbe, Circles, Novels, and more — personalized by **Your Honey** (see below). Pulse lives in this monorepo, not in a standalone repo.
 
-**Utility mini-apps:** Weather (`weather.mukoko.com`, repo: `mukoko-weather`), future Marketplace, Transport.
+**Mukoko News** (`mukoko-news` repo) is the news/articles app. **Bytes** (TikTok-style short-form scrolling) is also in the standalone version.
 
 **Separate products using Mukoko ID (Stytch SSO):** Nyuchi Learning, Zimbabwe Travel, Bundu Family.
 
@@ -72,7 +81,7 @@ Six interconnected apps sharing one identity, one AI engine, one reputation syst
 | **Auth**             | Stytch (sessions, OAuth, MFA, SSO)                                             |
 | **AI**               | Cloudflare AI + TFLite/CoreML on-device + FastAPI backend (honey.nyuchi.com)   |
 | **Storage**          | Cloudflare R2                                                                  |
-| **Blockchain**       | Base (Digital Twin NFT, MUKOKO tokens)                                         |
+| **Blockchain**       | Polygon PoS (MIT soulbound + MXT ERC-20)                                       |
 | **Web Deployment**   | Vercel (landing page + mini-app PWAs)                                          |
 | **Monorepo**         | Turborepo + pnpm workspaces                                                    |
 
@@ -88,7 +97,7 @@ Six interconnected apps sharing one identity, one AI engine, one reputation syst
 
 ```
 Flutter shell = native platform services (auth, wallet, AI, notifications, device APIs)
-WebView mini-apps = the six ecosystem apps + utility apps
+WebView mini-apps = the 15 ecosystem apps
 MukokoBridge = communication layer between shell and mini-apps
 Workers = translation layer (routing, auth verification, caching)
 Containers = heavy compute (AI inference, media processing, blockchain)
@@ -96,7 +105,7 @@ Containers = heavy compute (AI inference, media processing, blockchain)
 
 ### Mini-App Architecture — Two Frontends, One Backend
 
-Each ecosystem app (Clips, Pulse, Connect, Novels, Events, Weather) exists as **two frontends** sharing a single backend:
+Each ecosystem app (Campfire, Pulse, Mukoko News, Circles, Nhimbe, Novels, etc.) exists as **two frontends** sharing a single backend:
 
 ```
 ┌─────────────────────────────────────────────────────────┐
@@ -169,16 +178,16 @@ Stytch is the auth provider for the entire ecosystem. NOT Supabase.
 
 ---
 
-## MEMORY FILE — THE PERSONALIZATION CORE
+## YOUR HONEY — THE PERSONALIZATION CORE
 
-The **Memory File** is the central personalization artifact for each user. It is the single source of truth that the entire ecosystem uses to customize the experience.
+**Your Honey** is the central personalization artifact for each user. It is the single source of truth that the entire ecosystem uses to customize the experience.
 
 ### What it is
 
-- A structured profile co-created by **Nyuchi Honey** (on-device learning) and **Mukoko ID** (identity)
+- A structured profile co-created by the **on-device Honey engine** and **Mukoko ID** (identity)
 - Stored in **Mukoko ID** (the identity layer), not on-device only
-- **Editable by the user** — full data sovereignty, the user can view, modify, and delete their Memory File
-- The memory for **Shamwari AI**, **Pulse feed curation**, and all app personalization
+- **Editable by the user** — full data sovereignty, the user can view, modify, and delete Your Honey
+- The memory for **shamwari AI**, **Pulse feed curation**, and all app personalization
 
 ### What it contains
 
@@ -186,22 +195,22 @@ The **Memory File** is the central personalization artifact for each user. It is
 - Content preferences (formats, sources, languages)
 - Interaction patterns (reading habits, time-of-day, session length)
 - Explicit preferences (user-set, overrides inferred data)
-- Cross-app context (what the user does in Clips informs Pulse, Connect, etc.)
+- Cross-app context (what the user does in Mukoko News informs Pulse, Circles, etc.)
 
 ### How it flows
 
 ```
-Nyuchi Honey (on-device)          Mukoko ID (cloud)
+Honey Engine (on-device)          Mukoko ID (cloud)
 ┌───────────────────┐             ┌───────────────────┐
-│ Observes behavior │────sync────▶│ Stores Memory File│
+│ Observes behavior │────sync────▶│ Stores Your Honey │
 │ Learns locally    │             │ User can edit      │
 │ Privacy-first     │◀───read────│ API access for     │
-└───────────────────┘             │ Shamwari + Pulse   │
+└───────────────────┘             │ shamwari + Pulse   │
                                   └───────────────────┘
                                           │
                     ┌─────────────────────┤
                     ▼                     ▼
-              Pulse Feed            Shamwari AI
+              Pulse Feed            shamwari AI
               (personalized         (context-aware
                aggregation)          companion)
 ```
@@ -209,10 +218,10 @@ Nyuchi Honey (on-device)          Mukoko ID (cloud)
 ### Rules
 
 - Honey learns on-device — raw behavioral data never leaves the device
-- Honey syncs a **summarized** Memory File to Mukoko ID (not raw events)
-- The user can always see and edit their Memory File
-- Shamwari and Pulse read the Memory File via Mukoko ID API
-- Deleting the Memory File resets all personalization
+- Honey syncs a **summarized** profile to Mukoko ID (not raw events)
+- The user can always see and edit Your Honey
+- shamwari and Pulse read Your Honey via Mukoko ID API
+- Deleting Your Honey resets all personalization
 
 ---
 
@@ -220,15 +229,15 @@ Nyuchi Honey (on-device)          Mukoko ID (cloud)
 
 ### Cloudflare Workers (15 deployed)
 
-| Worker                 | Purpose                                                              |
-| ---------------------- | -------------------------------------------------------------------- |
-| `mukoko-news-backend`  | News/Clips feed + Bytes (app.mukoko.com) — owned by mukoko-news repo |
-| `mukoko-id-api`        | Authentication, profiles — Mukoko ID                                 |
-| `mukoko-nhimbe-api`    | Events (canonical — owned by nhimbe repo)                            |
-| `mukoko-events-api`    | Events (legacy duplicate — consolidate into nhimbe)                  |
-| `nyuchi_api`           | Core Nyuchi platform                                                 |
-| `nyuchi-brand-assets`  | Brand CDN (assets.nyuchi.com)                                        |
-| `hararemetro-redirect` | Legacy redirect                                                      |
+| Worker                 | Purpose                                                               |
+| ---------------------- | --------------------------------------------------------------------- |
+| `mukoko-news-backend`  | Mukoko News feed + Bytes (app.mukoko.com) — owned by mukoko-news repo |
+| `mukoko-id-api`        | Authentication, profiles — Mukoko ID                                  |
+| `mukoko-nhimbe-api`    | Events (canonical — owned by nhimbe repo)                             |
+| `mukoko-events-api`    | Events (legacy duplicate — consolidate into nhimbe)                   |
+| `nyuchi_api`           | Core Nyuchi platform                                                  |
+| `nyuchi-brand-assets`  | Brand CDN (assets.nyuchi.com)                                         |
+| `hararemetro-redirect` | Legacy redirect                                                       |
 
 **Note:** Existing workers use itty-router. New workers use Hono. Do not change existing worker routers unless explicitly migrating.
 
@@ -236,15 +245,16 @@ Nyuchi Honey (on-device)          Mukoko ID (cloud)
 
 Each ecosystem app has its own standalone repository containing its backend and standalone PWA frontend. The monorepo does **not** replace these repos — it provides the **super app frontend** for each app, ensuring a consistent in-app experience.
 
-| Standalone Repo   | Owns                                   | Super App Frontend In            |
-| ----------------- | -------------------------------------- | -------------------------------- |
-| `mukoko-news`     | Clips + Bytes backend + standalone PWA | `mini-apps/clips/`               |
-| `nhimbe`          | Events backend + standalone PWA        | `mini-apps/events/`              |
-| `mukoko-weather`  | Weather backend + standalone PWA       | `mini-apps/weather/`             |
-| `mukoko-auth`     | Auth backend (Stytch)                  | `services/id-api/`               |
-| `mukoko-connect`  | Connect backend + standalone PWA (new) | `mini-apps/connect/`             |
-| `mukoko-novels`   | Novels backend + standalone PWA (new)  | `mini-apps/novels/`              |
-| `brand-warehouse` | Brand assets CDN                       | `packages/design-system/assets/` |
+| Standalone Repo   | Owns                                         | Super App Frontend In            |
+| ----------------- | -------------------------------------------- | -------------------------------- |
+| `mukoko-news`     | Mukoko News + Bytes backend + standalone PWA | `mini-apps/news/`                |
+| `nhimbe`          | Nhimbe (events) backend + standalone PWA     | `mini-apps/nhimbe/`              |
+| `mukoko-weather`  | Weather backend + standalone PWA             | `mini-apps/weather/`             |
+| `mukoko-auth`     | Auth backend (Stytch)                        | `services/id-api/`               |
+| `mukoko-connect`  | Circles backend + standalone PWA             | `mini-apps/circles/`             |
+| `mukoko-novels`   | Novels backend + standalone PWA              | `mini-apps/novels/`              |
+| `mukoko-campfire` | Campfire backend + standalone PWA            | `mini-apps/campfire/`            |
+| `brand-warehouse` | Brand assets CDN                             | `packages/design-system/assets/` |
 
 **Two frontends per app:**
 
@@ -277,12 +287,17 @@ mukoko/
 │   └── pubspec.yaml
 │
 ├── mini-apps/                     # Super app frontends (Preact, loaded in Flutter WebView)
-│   ├── pulse/                     # Personalized aggregated feed (monorepo-native, no standalone repo)
-│   ├── clips/                     # News — super app UI (backend in mukoko-news repo)
-│   ├── connect/                   # Circles — super app UI (backend in mukoko-connect repo)
+│   ├── campfire/                  # Messaging + payments (backend in mukoko-campfire repo)
+│   ├── pulse/                     # Personalized aggregated feed (monorepo-native)
+│   ├── news/                      # Mukoko News — super app UI (backend in mukoko-news repo)
+│   ├── bytes/                     # Short-form video (backend in mukoko-news repo)
+│   ├── circles/                   # Communities — super app UI (backend in mukoko-connect repo)
+│   ├── nhimbe/                    # Events — super app UI (backend in nhimbe repo)
 │   ├── novels/                    # Author platform — super app UI (backend in mukoko-novels repo)
-│   ├── events/                    # Events — super app UI (backend in nhimbe repo)
+│   ├── bushtrade/                 # Marketplace — super app UI (backend in mukoko-bushtrade repo)
+│   ├── lingo/                     # Language learning — super app UI (backend in mukoko-lingo repo)
 │   ├── weather/                   # Weather — super app UI (backend in mukoko-weather repo)
+│   ├── transport/                 # Transit — super app UI (backend in mukoko-transport repo)
 │   └── _template/                 # Starter for new super app mini-app frontends
 │
 ├── services/                      # Cloudflare Workers (super app infrastructure only)
@@ -291,11 +306,12 @@ mukoko/
 │   ├── wallet-api/                # Payments + MUKOKO tokens
 │   ├── shamwari-api/              # AI companion (Cloudflare AI)
 │   ├── miniapp-registry/          # Mini-app manifest + R2 assets
-│   └── digital-twin/              # NFT + reputation
+│   ├── digital-twin/              # NFT + reputation
+│   └── _template/                 # Starter for new workers (Hono)
 │   # NOTE: App-specific backends (clips, pulse, events, connect, novels, weather)
 │   #        live in their standalone repos, NOT here.
 │
-├── honey/                         # Nuchi Honey (isolated, NOT a pnpm workspace)
+├── honey/                         # Your Honey AI service (isolated, NOT a pnpm workspace)
 │   ├── Dockerfile
 │   ├── app/                       # FastAPI service
 │   └── docker-compose.yml
@@ -308,13 +324,87 @@ mukoko/
 │   ├── bridge-sdk/                # @mukoko/bridge (TypeScript)
 │   └── api-client/                # @mukoko/api
 │
-├── web/                           # Landing page (deployed to Vercel)
+├── web/                           # Landing page (Next.js 15 + Sanity CMS, deployed to Vercel)
+│   ├── app/                       # Next.js app router (layout, pages)
+│   ├── src/
+│   │   ├── components/            # Header, HoneycombBackground, WaitlistForm, shadcn/ui
+│   │   ├── sections/              # Hero, Problem, Ecosystem, YourHoney, Ubuntu, NeverDo, FinalCTA, Footer
+│   │   └── lib/                   # Sanity client, utilities
+│   ├── studio/                    # Sanity Studio (blog CMS)
+│   │   └── schemaTypes/           # author, category, post schemas
+│   ├── public/                    # Static assets
+│   └── vercel.json                # Vercel deployment config
+│
 ├── docs/                          # Architecture docs, guides, ADRs
+│   ├── adr/                       # Architecture Decision Records
+│   │   ├── 001-monorepo-turborepo.md
+│   │   ├── 002-preact-over-react.md
+│   │   ├── 003-hono-for-new-workers.md
+│   │   ├── 004-mongodb-atlas-primary.md
+│   │   ├── 005-stytch-auth.md
+│   │   ├── 006-vercel-web-deployment.md
+│   │   ├── 007-workers-for-platforms.md
+│   │   ├── 008-polygon-two-token.md
+│   │   └── 009-foundation-dual-entity.md
+│   ├── guides/                    # Developer guides
+│   │   ├── getting-started.md
+│   │   ├── creating-mini-app.md
+│   │   ├── creating-service.md
+│   │   ├── connected-repos.md
+│   │   ├── mongodb-atlas.md
+│   │   └── stytch-integration.md
+│   └── api/                       # API reference
+│
 ├── .github/                       # CI/CD workflows
+├── ARCHITECTURE.md                # Detailed technical specification (45KB)
 ├── turbo.json                     # Monorepo config
 ├── pnpm-workspace.yaml            # Workspace definition
 └── CLAUDE.md                      # THIS FILE
 ```
+
+---
+
+## DEVELOPER ENVIRONMENT & TOOLING
+
+### Prerequisites
+
+| Tool    | Version | Notes                    |
+| ------- | ------- | ------------------------ |
+| Node.js | 22+     | Pinned in `.nvmrc`       |
+| pnpm    | 9.15.4+ | Pinned in `package.json` |
+| Flutter | Latest  | For `app/` development   |
+| Python  | 3.12+   | For `honey/` only        |
+| Docker  | Latest  | For `honey/` local dev   |
+
+### Root Configuration Files
+
+| File                  | Purpose                                                             |
+| --------------------- | ------------------------------------------------------------------- |
+| `turbo.json`          | Turborepo task graph (build, dev, lint, typecheck, test, deploy)    |
+| `pnpm-workspace.yaml` | Workspace: `packages/*`, `services/*`, `mini-apps/*`, `web`         |
+| `eslint.config.mjs`   | Root ESLint config — uses `@mukoko/eslint-config`                   |
+| `.prettierrc`         | Prettier: semicolons, 2-space indent, 100 char width, single quotes |
+| `.nvmrc`              | Locks Node to v22                                                   |
+| `.npmrc`              | Auto-install peers, no strict peer deps                             |
+
+### Git Hooks (Husky + lint-staged)
+
+Pre-commit hook runs `lint-staged` automatically on staged files. Configured via `husky` (v9.1.7) and `lint-staged` (v16.4.0) in `package.json`.
+
+### Key Dependency Versions
+
+| Package    | Version | Used In                     |
+| ---------- | ------- | --------------------------- |
+| turbo      | 2.4.0   | Root monorepo               |
+| typescript | 5.7.0   | All TS packages             |
+| preact     | 10.25.0 | Mini-apps                   |
+| vite       | 6.0     | Mini-apps                   |
+| hono       | 4.12.8  | New workers/services        |
+| wrangler   | 4.0.0   | Worker deployment           |
+| next       | 15      | `web/` landing page         |
+| react      | 19      | `web/` only (NOT mini-apps) |
+| eslint     | 10.0.0  | Linting                     |
+| prettier   | 3.4.0   | Formatting                  |
 
 ---
 
@@ -341,12 +431,21 @@ pnpm format
 
 # Single package
 pnpm turbo run build --filter=@mukoko/ui
-pnpm turbo run dev --filter=clips
+pnpm turbo run dev --filter=news
 pnpm turbo run test --filter=@mukoko/bridge
 
 # Single service
 cd services/gateway && pnpm dev          # wrangler dev
 cd services/gateway && pnpm deploy       # wrangler deploy
+
+# Landing page (web/)
+cd web && pnpm dev                       # Next.js dev server
+cd web && pnpm build                     # Next.js production build
+cd web && pnpm test                      # Vitest
+
+# Sanity Studio (web/studio/)
+cd web && pnpm sanity dev                # Sanity Studio dev
+cd web && pnpm sanity deploy             # Deploy Sanity Studio
 
 # Flutter
 cd app && flutter pub get
@@ -359,6 +458,92 @@ cd honey && pip install -r requirements.txt
 cd honey && python -m pytest tests/
 cd honey && docker compose up
 ```
+
+---
+
+## CI/CD & CODE QUALITY
+
+### GitHub Actions (`.github/workflows/ci.yml`)
+
+Triggers on push to `main` and all PRs to `main`. Runs:
+
+```
+pnpm turbo run build typecheck lint test
+```
+
+Uses pnpm v4 action, Node 22, Turborepo cache. Concurrency group cancels in-progress runs for the same ref.
+
+### Code Ownership (`.github/CODEOWNERS`)
+
+| Path                      | Team                   |
+| ------------------------- | ---------------------- |
+| Root config               | `@nyuchitech/core`     |
+| `app/`                    | `@nyuchitech/mobile`   |
+| `packages/design-system/` | `@nyuchitech/design`   |
+| `services/`               | `@nyuchitech/backend`  |
+| `honey/`                  | `@nyuchitech/ai`       |
+| `mini-apps/` + `web/`     | `@nyuchitech/frontend` |
+
+### PR Template
+
+All PRs use `.github/PULL_REQUEST_TEMPLATE.md` which includes the Ubuntu Test checklist.
+
+---
+
+## LANDING PAGE — WEB (`web/`)
+
+The landing page at `mukoko.com` is a **Next.js 15** app (NOT Preact — React 19 is used here only).
+
+| Component     | Technology                              |
+| ------------- | --------------------------------------- |
+| Framework     | Next.js 15, React 19                    |
+| CMS           | Sanity (next-sanity v9, Portable Text)  |
+| 3D Visuals    | Three.js (honeycomb background)         |
+| UI Components | shadcn/ui (registry.mukoko.com) + Radix |
+| Styling       | Tailwind CSS 4                          |
+| Testing       | Vitest                                  |
+| Deployment    | Vercel (`vercel.json`)                  |
+
+**Note:** React is used in `web/` because Next.js requires it. Mini-apps use Preact. Do not confuse the two.
+
+### Pages
+
+- `/` — Home (hero, problem, ecosystem, Your Honey, shamwari, Mukoko ID, ubuntu, never-do, CTA)
+- `/manifesto` — Brand manifesto
+- `/digital-twin` — Digital Twin marketing page (soulbound identity, three-pool system, data sovereignty)
+- `/token` — Token Economics marketing page (MIT + MXT, elastic supply, governance, Foundation)
+- `/help` — FAQ page (accordion sections, search)
+- `/legal/privacy` — Privacy policy
+- `/legal/terms` — Terms of service
+- `/legal/cookies` — Cookie policy
+- `/legal/community-guidelines` — Ubuntu-grounded community guidelines
+- `/blog` — Blog (Sanity CMS + ISR)
+- `/blog/[slug]` — Individual blog posts
+
+### Sanity Studio
+
+Content schemas for blog: `author`, `category`, `post`. Studio runs at `/studio` route or standalone via `pnpm sanity dev`.
+
+---
+
+## API GATEWAY ROUTING (`services/gateway/`)
+
+The gateway worker routes all API traffic and verifies Stytch sessions:
+
+| Route Path    | Upstream Service           |
+| ------------- | -------------------------- |
+| `/auth/*`     | `id-api`                   |
+| `/news/*`     | External (mukoko-news)     |
+| `/nhimbe/*`   | External (nhimbe)          |
+| `/pulse/*`    | Pulse API                  |
+| `/circles/*`  | External (mukoko-connect)  |
+| `/campfire/*` | External (mukoko-campfire) |
+| `/novels/*`   | External (mukoko-novels)   |
+| `/weather/*`  | External (mukoko-weather)  |
+| `/wallet/*`   | `wallet-api`               |
+| `/shamwari/*` | `shamwari-api`             |
+| `/miniapps/*` | `miniapp-registry`         |
+| `/twin/*`     | `digital-twin`             |
 
 ---
 
@@ -476,6 +661,40 @@ window.MukokoBridge = {
 - Rate limiting: per-user via KV
 - Environment variables for ALL secrets
 
+### Shared File Patterns
+
+**Every mini-app** follows the same structure:
+
+```
+mini-apps/{app}/
+├── package.json          # @mukoko/{app}, Preact + Vite
+├── index.html            # Entry point
+├── src/
+│   ├── index.tsx         # Mount point
+│   └── app.tsx           # Root component
+├── public/manifest.json  # PWA manifest
+├── vite.config.ts
+├── vitest.config.ts
+└── tsconfig.json
+```
+
+**Every service** follows the same structure:
+
+```
+services/{service}/
+├── package.json          # @mukoko/{service}, Hono + wrangler
+├── src/
+│   ├── index.ts          # Hono app entry
+│   ├── middleware/
+│   │   ├── auth.ts       # Stytch session verification
+│   │   └── index.ts
+│   └── lib/
+│       └── mongodb.ts    # MongoDB Atlas connection
+├── wrangler.jsonc        # Cloudflare config (bindings, env)
+├── vitest.config.ts
+└── tsconfig.json
+```
+
 ### General
 
 - TypeScript strict mode everywhere
@@ -489,7 +708,7 @@ window.MukokoBridge = {
 
 1. **EcoCash** — Econet API, USSD push / app-to-app (Zimbabwe's dominant payment)
 2. **InnBucks** — Wallet integration (growing Zimbabwe market)
-3. **MUKOKO Tokens** — Base blockchain internal ledger + on-chain
+3. **MUKOKO Tokens** — Polygon PoS: MIT (soulbound identity) + MXT (transferable ERC-20)
 4. **Bank Transfer** — ZimSwitch / RTGS (Phase 2)
 5. **Card Payments** — Visa/Mastercard gateway (Phase 2)
 
@@ -523,8 +742,45 @@ Zimbabwe market reality: data is expensive, connectivity is intermittent.
 - Mini-app sandboxing: scoped storage, no cross-app data without Bridge
 - Your Honey: on-device only, no raw data leaves device
 - Wallet: biometric auth for transactions above threshold
-- Nuchi Honey: isolated infrastructure, Cloudflare Tunnel, secret auth
+- Your Honey backend: isolated infrastructure, Cloudflare Tunnel, secret auth
 - All secrets in environment variables — NEVER in source code
+
+---
+
+## TOKEN ECONOMY — TWO-TOKEN ARCHITECTURE
+
+The platform uses two tokens on **Polygon PoS** (Solidity ^0.8.20, OpenZeppelin v5):
+
+**MUKOKO Identity Token (MIT)** — soulbound ERC-721, non-transferable, anchored to verified birth date. Used for governance staking and as value anchor for MXT. Think of it as ancestral land under Ubuntu customary law.
+
+**MUKOKO Exchange Token (MXT)** — standard transferable ERC-20 for all transactions. Floor price derived from MIT three-pool system. Elastic supply: no hard cap, baseline emission 10,000 MXT/user, annual ceiling 15%, burn rate 30% of fees.
+
+**Three-Pool Temporal Value:** `V = 0.60 × Mean(Year) + 0.30 × Mean(Month) + 0.10 × Mean(Day)` — pool means computed via O(1) running aggregates.
+
+**Governance:** Conviction staking with quadratic voting: `Weight = √(MXT staked) × Ubuntu Multiplier × Regional Multiplier`. Four tiers (Constitutional 66%, Strategic 40%, Operational 20%, Community 10%).
+
+**Initial allocation (3B MXT):** Ecosystem Reserve 30%, Community Treasury 20%, Founding Team 25% (4yr/1yr cliff), Operations 10%, Investors 10% (economic only, no governance), Advisors 5%.
+
+**Smart contracts:** PoolRegistry, IdentityToken, ValueOracle, ExchangeToken, EmissionController.
+
+See `ARCHITECTURE.md` sections 6 and 9 for full specification.
+
+---
+
+## FOUNDATION & LEGAL STRUCTURE
+
+**Mukoko Foundation** — Mauritius (Foundations Act 2012, VASP licence under VAITOS Act 2021). Non-profit custodian of protocol, token economics, and Ubuntu charter. Governed by a Council elected by MIT holders.
+
+**Nyuchi Africa (Pvt) Ltd** — Zimbabwe (Companies Act). For-profit operating company that builds and operates the platform. Licensed by the Foundation under a revocable service agreement.
+
+**Founder's Reserved Powers** (legal rights in Foundation charter, NOT token rights):
+
+- Ubuntu Veto — block proposals failing the Ubuntu Test
+- African Sovereignty Mandate — majority-African Council composition
+- Core Protocol Lock — protect MIT soulbound property, birth-date anchoring, three-pool system
+- Emergency Pause — circuit breaker for security incidents
+
+Reserved Powers cannot allocate tokens, direct treasury spending, or benefit the founder financially.
 
 ---
 
@@ -544,30 +800,37 @@ Zimbabwe market reality: data is expensive, connectivity is intermittent.
 12. **DO NOT** treat Bundu Family as part of this repo. It is a separate app.
 13. **DO NOT** duplicate backend logic in this monorepo. Each app's backend lives in its standalone repo. The `mini-apps/` directory contains super app frontends only.
 14. **DO NOT** confuse the super app frontend (`mini-apps/`) with the standalone PWA. They are separate codebases sharing the same backend API.
+15. **DO NOT** create page-specific CSS. All pages use the same shared brand primitives from `globals.css` (and ultimately from `@mukoko/ui` registry). No page should have its own parallel styling system. New primitives must be submitted as issues to `nyuchitech/mukoko-registry`.
+16. **DO NOT** set touch targets below 48px. Default touch target is **56px**; minimum is **48px** (only for compact inline form elements). All interactive elements must meet these minimums.
+17. **DO NOT** use light mode on the marketing site. The marketing site (`web/`) is **dark-mode only** — no `prefers-color-scheme` media queries, no light theme.
 
 ---
 
 ## QUICK REFERENCE
 
-| Item              | Value                                   |
-| ----------------- | --------------------------------------- |
-| Primary color     | Tanzanite `#4B0082` / `#B388FF`         |
-| Auth provider     | Stytch                                  |
-| Primary database  | MongoDB Atlas                           |
-| Edge cache        | Cloudflare KV + D1                      |
-| Object storage    | Cloudflare R2                           |
-| AI                | Cloudflare AI + on-device TFLite/CoreML |
-| Web deployment    | Vercel                                  |
-| Worker deployment | Cloudflare Workers + Containers         |
-| Mini-app workers  | Workers for Platforms                   |
-| Framework         | Flutter + Preact WebView mini-apps      |
-| State management  | Riverpod                                |
-| Blockchain        | Base (NFT + tokens)                     |
-| Payments          | EcoCash → InnBucks → MUKOKO tokens      |
-| Monorepo          | Turborepo + pnpm                        |
-| Node              | 22+                                     |
-| Min Android       | API 24 (7.0)                            |
-| Min iOS           | 15.0                                    |
+| Item              | Value                                    |
+| ----------------- | ---------------------------------------- |
+| Primary color     | Tanzanite `#4B0082` / `#B388FF`          |
+| Auth provider     | Stytch                                   |
+| Primary database  | MongoDB Atlas                            |
+| Edge cache        | Cloudflare KV + D1                       |
+| Object storage    | Cloudflare R2                            |
+| AI                | Cloudflare AI + on-device TFLite/CoreML  |
+| Web deployment    | Vercel                                   |
+| Worker deployment | Cloudflare Workers + Containers          |
+| Mini-app workers  | Workers for Platforms                    |
+| Framework         | Flutter + Preact WebView mini-apps       |
+| State management  | Riverpod                                 |
+| Blockchain        | Polygon PoS (MIT soulbound + MXT ERC-20) |
+| Payments          | EcoCash → InnBucks → MUKOKO tokens       |
+| Monorepo          | Turborepo + pnpm                         |
+| Node              | 22+                                      |
+| Min Android       | API 24 (7.0)                             |
+| Min iOS           | 15.0                                     |
+| Architecture doc  | `ARCHITECTURE.md` (detailed spec)        |
+| ADRs              | `docs/adr/001-009`                       |
+| Dev guides        | `docs/guides/`                           |
+| CI                | GitHub Actions (`ci.yml`)                |
 
 ---
 
